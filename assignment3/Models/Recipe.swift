@@ -1,22 +1,18 @@
-//
-//  Recipe.swift
-//  assignment3
-//
-//  Created by Jacob Efendi on 5/19/19.
-//  Copyright © 2019 group144. All rights reserved.
-//
-
 import Foundation
 
+// recipe object
 class Recipe {
     
+    var id: Int
     var name: String
     var prepTime: Int
     var cookingTime: Int
-    var ingredients: [Ingredient]
+    var ingredients: [String]
     var methods: [String]
     
-    init(name: String, prepTime: Int, cookingTime: Int, ingredients: [Ingredient], methods: [String]) {
+    // initialiser
+    init(id: Int, name: String, prepTime: Int, cookingTime: Int, ingredients: [String], methods: [String]) {
+        self.id = id
         self.name = name
         self.prepTime = prepTime
         self.cookingTime = cookingTime

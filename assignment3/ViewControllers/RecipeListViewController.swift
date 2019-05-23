@@ -8,18 +8,26 @@
 
 import UIKit
 
+// view controller to view recipe list
 class RecipeListViewController: UIViewController {
 
+    // outlets
     @IBOutlet weak var recipeSearchBr: UISearchBar!
     @IBOutlet weak var recipeTblView: UITableView!
     
+    // array for recipes
     var recipes: [Recipe] = []
     
+    // function called when view is loaded
     override func viewDidLoad() {
         super.viewDidLoad()
+        getRecipes()
     }
     
+    // function called before sefue
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        // if segue is to the view recipe view, get recipe data from selected tablecell
         if (segue.identifier == "RecipeListToViewRecipe") {
             if let indexPath = sender as? IndexPath {
                 let recipe = recipes[indexPath.row]
@@ -28,9 +36,39 @@ class RecipeListViewController: UIViewController {
             }
         }
     }
+    
+    // function to get the recipe data from the core data
+    func getRecipes() {
+        
+        // get the view delegate
+        guard let delegate = UIApplication.shared.delegate as? AppDelegate else { return }
+        
+        // get the recipe data
+        let recipeData = CoreDataController.getRecipeData(delegate: delegate)
+        
+        // create recipe objects based off the recipe data
+        for data in recipeData {
+            
+            // initialise recipe variables
+            let id = data.value(forKey: "id") as? Int ?? 0
+            let name = data.value(forKey: "name") as? String ?? "NULL"
+            let prepTime = data.value(forKey: "prepTime") as? Int ?? 0
+            let cookingTime = data.value(forKey: "cookingTime") as? Int ?? 0
+            let ingredients = data.value(forKey: "ingredients") as? [String] ?? []
+            let methods = data.value(forKey: "methods") as? [String] ?? []
+            
+            // create the recipe and add it to the recipe list
+            let recipe = Recipe(id: id, name: name, prepTime: prepTime, cookingTime: cookingTime, ingredients: ingredients, methods: methods)
+            recipes.append(recipe)
+        }
+        
+    }
 }
 
+// tableview functions
 extension RecipeListViewController: UITableViewDelegate, UITableViewDataSource {
+    
+    //
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return recipes.count
     }

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		32433E792296892800FA3EC8 /* CoreDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32433E782296892800FA3EC8 /* CoreDataController.swift */; };
 		329472AE22900AF900A40885 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 329472AD22900AF900A40885 /* AppDelegate.swift */; };
 		329472B322900AF900A40885 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 329472B122900AF900A40885 /* Main.storyboard */; };
 		329472B622900AF900A40885 /* assignment3.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 329472B422900AF900A40885 /* assignment3.xcdatamodeld */; };
@@ -16,10 +17,10 @@
 		329472C52290119A00A40885 /* WriteRecipeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 329472C42290119A00A40885 /* WriteRecipeViewController.swift */; };
 		32ED7B6C2290EAC200AD5550 /* ViewRecipeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32ED7B6B2290EAC200AD5550 /* ViewRecipeViewController.swift */; };
 		32ED7B6E2290F2B900AD5550 /* Recipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32ED7B6D2290F2B900AD5550 /* Recipe.swift */; };
-		32ED7B702290F30F00AD5550 /* Ingredient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32ED7B6F2290F30F00AD5550 /* Ingredient.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		32433E782296892800FA3EC8 /* CoreDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataController.swift; sourceTree = "<group>"; };
 		329472AA22900AF900A40885 /* assignment3.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = assignment3.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		329472AD22900AF900A40885 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		329472B222900AF900A40885 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -31,7 +32,6 @@
 		329472C42290119A00A40885 /* WriteRecipeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = WriteRecipeViewController.swift; path = assignment3/ViewControllers/WriteRecipeViewController.swift; sourceTree = SOURCE_ROOT; };
 		32ED7B6B2290EAC200AD5550 /* ViewRecipeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ViewRecipeViewController.swift; path = assignment3/ViewControllers/ViewRecipeViewController.swift; sourceTree = SOURCE_ROOT; };
 		32ED7B6D2290F2B900AD5550 /* Recipe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Recipe.swift; path = assignment3/Models/Recipe.swift; sourceTree = SOURCE_ROOT; };
-		32ED7B6F2290F30F00AD5550 /* Ingredient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Ingredient.swift; path = assignment3/Models/Ingredient.swift; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -74,7 +74,7 @@
 				329472C42290119A00A40885 /* WriteRecipeViewController.swift */,
 				32ED7B6B2290EAC200AD5550 /* ViewRecipeViewController.swift */,
 				32ED7B6D2290F2B900AD5550 /* Recipe.swift */,
-				32ED7B6F2290F30F00AD5550 /* Ingredient.swift */,
+				32433E782296892800FA3EC8 /* CoreDataController.swift */,
 			);
 			path = assignment3;
 			sourceTree = "<group>";
@@ -152,8 +152,8 @@
 			files = (
 				329472C52290119A00A40885 /* WriteRecipeViewController.swift in Sources */,
 				329472C322900C7600A40885 /* RecipeListViewController.swift in Sources */,
-				32ED7B702290F30F00AD5550 /* Ingredient.swift in Sources */,
 				329472AE22900AF900A40885 /* AppDelegate.swift in Sources */,
+				32433E792296892800FA3EC8 /* CoreDataController.swift in Sources */,
 				32ED7B6E2290F2B900AD5550 /* Recipe.swift in Sources */,
 				329472B622900AF900A40885 /* assignment3.xcdatamodeld in Sources */,
 				32ED7B6C2290EAC200AD5550 /* ViewRecipeViewController.swift in Sources */,
