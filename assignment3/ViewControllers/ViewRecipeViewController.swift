@@ -11,6 +11,8 @@ class ViewRecipeViewController: UIViewController {
     // tableview outlets
     @IBOutlet weak var ingredientsTv: UITableView!
     @IBOutlet weak var methodsTv: UITableView!
+    @IBOutlet weak var ingredientsTvHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var methodsTvHeightConstraint: NSLayoutConstraint!
     
     // recipe object
     var recipe: Recipe = Recipe(id: 0, name: "", prepTime: 0, cookingTime: 0, ingredients: [], methods: [])
@@ -29,6 +31,17 @@ class ViewRecipeViewController: UIViewController {
         cookingTimeLbl.text = String(recipe.cookingTime) + " minutes"
         ingredients = recipe.ingredients
         methods = recipe.methods
+        
+        ingredientsTv.separatorStyle = .none
+        methodsTv.separatorStyle = .none
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        ingredientsTv.frame = CGRect(x: ingredientsTv.frame.origin.x, y: ingredientsTv.frame.origin.y, width: ingredientsTv.frame.size.width, height: ingredientsTv.contentSize.height)
+        ingredientsTvHeightConstraint.constant = ingredientsTv.contentSize.height + 10
+        
+        methodsTv.frame = CGRect(x: methodsTv.frame.origin.x, y: methodsTv.frame.origin.y, width: methodsTv.frame.size.width, height: methodsTv.contentSize.height)
+        methodsTvHeightConstraint.constant = methodsTv.contentSize.height + 10
     }
 }
 
@@ -44,14 +57,16 @@ extension ViewRecipeViewController: UITableViewDelegate, UITableViewDataSource {
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if (tableView == ingredientsTv) {
             let ingredient = ingredients[indexPath.row]
-            let cell = UITableViewCell(style: UITableViewCell.CellStyle.default, reuseIdentifier: "IngredientCell")
+            let cell = ingredientsTv.dequeueReusableCell(withIdentifier: "IngredientCell", for: indexPath)
+            cell.textLabel?.numberOfLines = 0
             cell.textLabel?.text = ingredient
             cell.selectionStyle = .none
             return cell
         }
         else if (tableView == methodsTv) {
             let method = methods[indexPath.row]
-            let cell = UITableViewCell(style: UITableViewCell.CellStyle.default, reuseIdentifier: "MethodCell")
+            let cell = methodsTv.dequeueReusableCell(withIdentifier: "MethodCell", for: indexPath)
+            cell.textLabel?.numberOfLines = 0
             cell.textLabel?.text = method
             cell.selectionStyle = .none
             return cell

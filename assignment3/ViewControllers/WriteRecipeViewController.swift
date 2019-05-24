@@ -19,6 +19,8 @@ class WriteRecipeViewController: UIViewController {
     // tableview outlets
     @IBOutlet weak var ingredientsTv: UITableView!
     @IBOutlet weak var methodsTv: UITableView!
+    @IBOutlet weak var ingredientsTvHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var methodsTvHeightConstraint: NSLayoutConstraint!
     
     // arrays for ingredients and methods
     var ingredients: [String] = []
@@ -31,6 +33,16 @@ class WriteRecipeViewController: UIViewController {
         // empty out tableviews
         ingredientsTv.tableFooterView = UIView(frame: CGRect.zero)
         methodsTv.tableFooterView = UIView(frame: CGRect.zero)
+    }
+    
+    override func viewDidLayoutSubviews() {
+        ingredientsTv.frame = CGRect(x: ingredientsTv.frame.origin.x, y: ingredientsTv.frame.origin.y, width: ingredientsTv.frame.size.width, height: ingredientsTv.contentSize.height)
+        ingredientsTvHeightConstraint.constant = ingredientsTv.contentSize.height + 10
+        ingredientsTv.reloadData()
+        
+        methodsTv.frame = CGRect(x: methodsTv.frame.origin.x, y: methodsTv.frame.origin.y, width: methodsTv.frame.size.width, height: methodsTv.contentSize.height)
+        methodsTvHeightConstraint.constant = methodsTv.contentSize.height + 10
+        methodsTv.reloadData()
     }
 
     @IBAction func onAddIngredientBtnPressed(_ sender: Any) {
@@ -59,7 +71,7 @@ class WriteRecipeViewController: UIViewController {
                 // insert new ingredient into tableview and update
                 let indexPath = IndexPath(row: ingredients.count - 1, section: 0)
                 ingredientsTv.beginUpdates()
-                ingredientsTv.insertRows(at: [indexPath], with: .automatic)
+                ingredientsTv.insertRows(at: [indexPath], with: .fade)
                 ingredientsTv.endUpdates()
             }
         }
@@ -78,7 +90,7 @@ class WriteRecipeViewController: UIViewController {
             // insert new method into tableview and update
             let indexPath = IndexPath(row: methods.count - 1, section: 0)
             methodsTv.beginUpdates()
-            methodsTv.insertRows(at: [indexPath], with: .automatic)
+            methodsTv.insertRows(at: [indexPath], with: .bottom)
             methodsTv.endUpdates()
         }
     }
@@ -110,6 +122,40 @@ class WriteRecipeViewController: UIViewController {
     }
 }
 
+// textfield related functions
+extension WriteRecipeViewController: UITextFieldDelegate {
+    
+    // function to check textfield content and use limitations (number of type of characters)
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        
+        // initialise character limit and allowed characters
+        var charLimit: Int = 0
+        var allowedCharacters = CharacterSet.alphanumerics
+        allowedCharacters = allowedCharacters.union(CharacterSet.punctuationCharacters)
+        allowedCharacters = allowedCharacters.union(CharacterSet.symbols)
+        allowedCharacters = allowedCharacters.union(CharacterSet(charactersIn: " "))
+        
+        // set character limit based off the textfield selected
+        if (textField == ingredientQtyTf || textField == prepTimeTf || textField == cookingTimeTf) {
+            charLimit = 3
+            // also character allowed characters to numbers only
+            allowedCharacters = CharacterSet.decimalDigits
+        }
+        if (textField == ingredientNameTf) { charLimit = 50 }
+        else if (textField == methodTf) { charLimit = 200}
+        
+        // check length of current string
+        if (range.length + range.location > textField.text!.count) { return false }
+        let length = textField.text!.count + string.count - range.length
+        
+        // get characters currently in textfield
+        let typedCharacters = CharacterSet(charactersIn: string)
+        
+        // return bool for if text is within limit and is using valid characters
+        return length <= charLimit && allowedCharacters.isSuperset(of: typedCharacters)
+    }
+}
+
 
 // tableview related functions
 extension WriteRecipeViewController: UITableViewDelegate, UITableViewDataSource {
@@ -134,7 +180,9 @@ extension WriteRecipeViewController: UITableViewDelegate, UITableViewDataSource 
             let ingredient = ingredients[indexPath.row]
             
             // initialise tableview cell and set cell text
-            let cell = UITableViewCell(style: UITableViewCell.CellStyle.default, reuseIdentifier: "IngredientCell")
+            let cell = ingredientsTv.dequeueReusableCell(withIdentifier: "IngredientCell", for: indexPath)
+            // set number of lines to 0 so that rows have dynamic height based off contnet
+            cell.textLabel?.numberOfLines = 0
             cell.textLabel?.text = ingredient
             
             // return the cell
@@ -145,7 +193,8 @@ extension WriteRecipeViewController: UITableViewDelegate, UITableViewDataSource 
             let method = methods[indexPath.row]
             
             // initialise tableview cell and set cell text
-            let cell = UITableViewCell(style: UITableViewCell.CellStyle.default, reuseIdentifier: "MethodCell")
+            let cell = methodsTv.dequeueReusableCell(withIdentifier: "MethodCell", for: indexPath)
+            cell.textLabel?.numberOfLines = 0
             cell.textLabel?.text = method
             
             // return the cell
