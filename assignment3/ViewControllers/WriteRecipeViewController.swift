@@ -112,6 +112,42 @@ class WriteRecipeViewController: UIViewController {
         CoreDataController.saveRecipeData(delegate: delegate, recipe: recipe)
     }
     
+    /*
+        camera implementation code
+        written by mudaqus, to be implemented by jacob
+     
+     @IBOutlet weak var img: UIImageView!
+     var imageController = UIImagePickerController()
+     
+     override func viewDidLoad() {
+     super.viewDidLoad()
+     imageController.delegate = self
+     // Do any additional setup after loading the view, typically from a nib.
+     }
+     @IBAction func btnPressed(_ sender: Any) {
+     imageController.sourceType = .photoLibrary
+     imageController.allowsEditing = true
+     present(imageController, animated: true, completion: nil)
+     }
+     
+     @IBAction func btnCapture(_ sender: Any) {
+     imageController.sourceType = .camera
+     imageController.allowsEditing = false
+     self.present(imageController, animated: true, completion: nil)
+     }
+     
+     }
+     
+     extension ViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+     if let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
+     img.image = image
+     }
+     dismiss(animated: true, completion: nil)
+     }
+     }
+    */
+    
     // function that is called before segue
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
