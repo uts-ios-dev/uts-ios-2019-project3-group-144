@@ -27,8 +27,44 @@ class ViewRecipeViewController: UIViewController {
 
         // insert recipe data into appropriate fields
         recipeNameLbl.text = recipe.name
-        prepTimeLbl.text = String(recipe.prepTime) + " minutes"
-        cookingTimeLbl.text = String(recipe.cookingTime) + " minutes"
+        
+        let prepTime = minutesToHours(minutes: recipe.prepTime)
+        
+        if (prepTime.hours == 0) {
+            if (prepTime.minutes != 1) { prepTimeLbl.text = "\(prepTime.minutes) minutes" }
+            else { prepTimeLbl.text = "\(prepTime.minutes) minute" }
+        }
+        else if (prepTime.minutes == 0) {
+            if (prepTime.hours != 1) { prepTimeLbl.text = "\(prepTime.hours) hours" }
+            else { prepTimeLbl.text = "\(prepTime.hours) hour" }
+        }
+        else {
+            if (prepTime.hours != 1 ) { prepTimeLbl.text = "\(prepTime.hours) hours, "}
+            else { prepTimeLbl.text = "\(prepTime.hours) hour, "}
+            
+            if (prepTime.minutes != 1) { prepTimeLbl.text! += "\(prepTime.minutes) minutes" }
+            else { prepTimeLbl.text! += "\(prepTime.minutes) minute" }
+        }
+        
+        let cookingTime = minutesToHours(minutes: recipe.cookingTime)
+
+        print(cookingTime)
+        if (cookingTime.hours == 0) {
+            if (cookingTime.minutes != 1) { cookingTimeLbl.text = "\(cookingTime.minutes) minutes" }
+            else { cookingTimeLbl.text = "\(cookingTime.minutes) minute" }
+        }
+        else if (cookingTime.minutes == 0) {
+            if (cookingTime.hours != 1) { cookingTimeLbl.text = "\(cookingTime.hours) hours" }
+            else { cookingTimeLbl.text = "\(String(cookingTime.hours)) hour" }
+        }
+        else {
+            if (cookingTime.hours != 1 ) { cookingTimeLbl.text = "\(cookingTime.hours) hours, "}
+            else { cookingTimeLbl.text = "\(cookingTime.hours) hour, "}
+            
+            if (cookingTime.minutes != 1) { cookingTimeLbl.text! += "\(cookingTime.minutes) minutes" }
+            else { cookingTimeLbl.text! += "\(cookingTime.minutes) minute" }
+        }
+    
         ingredients = recipe.ingredients
         methods = recipe.methods
         
@@ -42,6 +78,10 @@ class ViewRecipeViewController: UIViewController {
         
         methodsTv.frame = CGRect(x: methodsTv.frame.origin.x, y: methodsTv.frame.origin.y, width: methodsTv.frame.size.width, height: methodsTv.contentSize.height)
         methodsTvHeightConstraint.constant = methodsTv.contentSize.height + 10
+    }
+    
+    func minutesToHours(minutes: Int) -> (hours: Int, minutes: Int) {
+        return (hours: minutes / 60, minutes: minutes % 60)
     }
 }
 

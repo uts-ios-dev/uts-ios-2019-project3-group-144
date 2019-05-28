@@ -160,7 +160,7 @@ extension WriteRecipeViewController: UITextFieldDelegate {
         
         // set character limit based off the textfield selected
         if (textField == ingredientQtyTf || textField == prepTimeTf || textField == cookingTimeTf) {
-            charLimit = 3
+            charLimit = 4
             // also character allowed characters to numbers only
             allowedCharacters = CharacterSet.decimalDigits
         }
