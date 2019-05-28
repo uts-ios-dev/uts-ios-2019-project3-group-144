@@ -134,12 +134,15 @@
                                         </barButtonItem>
                                         <barButtonItem key="rightBarButtonItem" systemItem="edit" id="hJV-45-Ddb">
                                             <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <connections>
+                                                <segue destination="F0Y-zI-DkW" kind="show" identifier="ViewToEditRecipe" id="MhI-BW-Lxn"/>
+                                            </connections>
                                         </barButtonItem>
                                     </navigationItem>
                                 </items>
                             </navigationBar>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bouncesZoom="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cgU-vq-4bN">
-                                <rect key="frame" x="0.0" y="88" width="414" height="774"/>
+                                <rect key="frame" x="0.0" y="88" width="414" height="808"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="don-Tn-8mv">
                                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
@@ -298,7 +301,7 @@
                                 </subviews>
                                 <constraints>
                                     <constraint firstItem="don-Tn-8mv" firstAttribute="leading" secondItem="cgU-vq-4bN" secondAttribute="leading" id="2hq-1g-HBr"/>
-                                    <constraint firstAttribute="bottom" secondItem="don-Tn-8mv" secondAttribute="bottom" id="FJJ-j7-7w3"/>
+                                    <constraint firstAttribute="bottom" secondItem="don-Tn-8mv" secondAttribute="bottom" id="B7p-qJ-bFA"/>
                                     <constraint firstItem="don-Tn-8mv" firstAttribute="centerX" secondItem="cgU-vq-4bN" secondAttribute="centerX" id="Q0V-co-vaR"/>
                                     <constraint firstAttribute="trailing" secondItem="don-Tn-8mv" secondAttribute="trailing" id="UDH-Rp-3fG"/>
                                     <constraint firstItem="don-Tn-8mv" firstAttribute="top" secondItem="cgU-vq-4bN" secondAttribute="top" id="doj-oe-Htm"/>
@@ -307,10 +310,10 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="gh2-nv-bIg" firstAttribute="bottom" secondItem="cgU-vq-4bN" secondAttribute="bottom" id="2fs-Gf-gbN"/>
                             <constraint firstItem="cgU-vq-4bN" firstAttribute="leading" secondItem="gh2-nv-bIg" secondAttribute="leading" id="EEK-vs-jEs"/>
                             <constraint firstItem="kdH-5S-HoT" firstAttribute="trailing" secondItem="gh2-nv-bIg" secondAttribute="trailing" id="Sqj-Ec-GlM"/>
                             <constraint firstItem="gh2-nv-bIg" firstAttribute="trailing" secondItem="cgU-vq-4bN" secondAttribute="trailing" id="bBV-NA-f4O"/>
+                            <constraint firstAttribute="bottom" secondItem="cgU-vq-4bN" secondAttribute="bottom" id="beY-Zy-Dr7"/>
                             <constraint firstItem="kdH-5S-HoT" firstAttribute="top" secondItem="gh2-nv-bIg" secondAttribute="top" id="dxK-EJ-axN"/>
                             <constraint firstItem="don-Tn-8mv" firstAttribute="width" secondItem="ojB-eH-b7b" secondAttribute="width" id="gtf-CX-1bX"/>
                             <constraint firstItem="kdH-5S-HoT" firstAttribute="leading" secondItem="gh2-nv-bIg" secondAttribute="leading" id="iKK-ST-QOc"/>
@@ -343,7 +346,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bouncesZoom="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XZP-16-9Rh">
-                                <rect key="frame" x="0.0" y="88" width="414" height="774"/>
+                                <rect key="frame" x="0.0" y="88" width="414" height="808"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="62f-dw-1i1">
                                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
@@ -622,7 +625,6 @@
                                     <constraint firstAttribute="trailing" secondItem="62f-dw-1i1" secondAttribute="trailing" id="5JW-SQ-0bY"/>
                                     <constraint firstItem="62f-dw-1i1" firstAttribute="leading" secondItem="XZP-16-9Rh" secondAttribute="leading" id="Cs8-c0-Gtf"/>
                                     <constraint firstItem="62f-dw-1i1" firstAttribute="top" secondItem="XZP-16-9Rh" secondAttribute="top" id="JI1-fR-tNj"/>
-                                    <constraint firstAttribute="bottom" secondItem="62f-dw-1i1" secondAttribute="bottom" id="RP9-Pd-dJK"/>
                                     <constraint firstItem="62f-dw-1i1" firstAttribute="centerX" secondItem="XZP-16-9Rh" secondAttribute="centerX" id="ajR-79-5YR"/>
                                     <constraint firstAttribute="bottom" secondItem="62f-dw-1i1" secondAttribute="bottom" id="bvu-pe-5SB"/>
                                 </constraints>
@@ -661,10 +663,10 @@
                             <constraint firstItem="cvw-H0-pUB" firstAttribute="leading" secondItem="Cap-Tl-weS" secondAttribute="leading" id="37V-2p-ZjB"/>
                             <constraint firstItem="62f-dw-1i1" firstAttribute="height" secondItem="0eC-rT-na3" secondAttribute="height" id="LAc-Zc-dTR"/>
                             <constraint firstItem="XZP-16-9Rh" firstAttribute="leading" secondItem="Cap-Tl-weS" secondAttribute="leading" id="NXs-xY-SG5"/>
+                            <constraint firstAttribute="bottom" secondItem="XZP-16-9Rh" secondAttribute="bottom" id="dCD-m0-uMb"/>
                             <constraint firstItem="Cap-Tl-weS" firstAttribute="trailing" secondItem="XZP-16-9Rh" secondAttribute="trailing" id="fUE-2b-OGY"/>
                             <constraint firstItem="62f-dw-1i1" firstAttribute="width" secondItem="0eC-rT-na3" secondAttribute="width" id="nRC-sD-q1G"/>
                             <constraint firstItem="XZP-16-9Rh" firstAttribute="top" secondItem="cvw-H0-pUB" secondAttribute="bottom" id="sx2-Yy-CJ1"/>
-                            <constraint firstItem="Cap-Tl-weS" firstAttribute="bottom" secondItem="XZP-16-9Rh" secondAttribute="bottom" id="tAp-iw-xdw"/>
                             <constraint firstItem="cvw-H0-pUB" firstAttribute="trailing" secondItem="Cap-Tl-weS" secondAttribute="trailing" id="u1u-PJ-y8s"/>
                             <constraint firstItem="cvw-H0-pUB" firstAttribute="centerX" secondItem="0eC-rT-na3" secondAttribute="centerX" id="ubG-4s-tJr"/>
                             <constraint firstItem="cvw-H0-pUB" firstAttribute="top" secondItem="Cap-Tl-weS" secondAttribute="top" id="uoq-5f-ytJ"/>
@@ -716,6 +718,7 @@
         <image name="default" width="400" height="225"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="MhI-BW-Lxn"/>
         <segue reference="rjO-dr-4Ka"/>
     </inferredMetricsTieBreakers>
 </document>

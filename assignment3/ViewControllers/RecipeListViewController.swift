@@ -94,7 +94,11 @@ extension RecipeListViewController: UITableViewDelegate, UITableViewDataSource {
                 let recipe = self.recipes[indexPath.row]
                 let id = recipe.id
                 self.recipes.remove(at: indexPath.row)
+                
+                tableView.beginUpdates()
                 tableView.deleteRows(at: [indexPath], with: UITableView.RowAnimation.automatic)
+                tableView.endUpdates()
+                
                 CoreDataController.deleteRecipeData(delegate: delegate, id: id)
             })
             let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)

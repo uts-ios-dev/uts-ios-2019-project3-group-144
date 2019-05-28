@@ -83,6 +83,14 @@ class ViewRecipeViewController: UIViewController {
     func minutesToHours(minutes: Int) -> (hours: Int, minutes: Int) {
         return (hours: minutes / 60, minutes: minutes % 60)
     }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if (segue.identifier == "ViewToEditRecipe") {
+            print("editing recipe!")
+            let dest = segue.destination as! WriteRecipeViewController
+            dest.recipe = recipe
+        }
+    }
 }
 
 // tableview related functions

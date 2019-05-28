@@ -28,20 +28,27 @@ class WriteRecipeViewController: UIViewController {
     @IBOutlet weak var recipeIv: UIImageView!
     var imageController = UIImagePickerController()
     
+    // recipe object to be saved
+    var recipe: Recipe = Recipe(id: 0, name: "", prepTime: 0, cookingTime: 0, ingredients: [], methods: [])
     
     // arrays for ingredients and methods
     var ingredients: [String] = []
     var methods: [String] = []
-    var methodSteps: [Int] = []
-    var methodsFinal: [String] = []
     
     
     // function called when view is loaded
     override func viewDidLoad() {
         super.viewDidLoad()
         methodsTv.isEditing = true
-        
+        ingredientsTv.isEditing = true
         imageController.delegate = self
+        
+        // set up initial values for entry fields
+        recipeNameTf.text = recipe.name
+        prepTimeTf.text = String(recipe.prepTime)
+        cookingTimeTf.text = String(recipe.cookingTime)
+        ingredients = recipe.ingredients
+        methods = recipe.methods
 
         // empty out tableviews
         ingredientsTv.tableFooterView = UIView(frame: CGRect.zero)
@@ -49,10 +56,12 @@ class WriteRecipeViewController: UIViewController {
     }
     
     override func viewDidLayoutSubviews() {
+        // adjust ingredients tableview height based on number of rows needed
         ingredientsTv.frame = CGRect(x: ingredientsTv.frame.origin.x, y: ingredientsTv.frame.origin.y, width: ingredientsTv.frame.size.width, height: ingredientsTv.contentSize.height)
         ingredientsTvHeightConstraint.constant = ingredientsTv.contentSize.height + 10
         ingredientsTv.reloadData()
         
+        // adjust methods tableview height based on the number of rows needed
         methodsTv.frame = CGRect(x: methodsTv.frame.origin.x, y: methodsTv.frame.origin.y, width: methodsTv.frame.size.width, height: methodsTv.contentSize.height)
         methodsTvHeightConstraint.constant = methodsTv.contentSize.height + 10
         methodsTv.reloadData()
@@ -108,13 +117,7 @@ class WriteRecipeViewController: UIViewController {
         if let method: String = methodTf.text {
             // add method to list
             methods.append(method)
-            // add number of method to list
-            methodSteps.append(methods.count)
-            // combine both method and number to form a new string
-            methodsFinal.append("\(methods.count). \((method))")
-            // update
-            updateMethodNumber()
-            
+  
             // empty method input fields
             methodTf.text = ""
             view.endEditing(true)
@@ -127,13 +130,6 @@ class WriteRecipeViewController: UIViewController {
         }
     }
     
-    // function that will renumber steps when there is a reorder of methods
-    func updateMethodNumber() {
-        for i in 0...methods.count-1 {
-            methodsFinal[i] = "\(methodSteps[i]). \(methods[i])"
-        }
-    }
-    
     // function to save recipe to core data
     func saveRecipe() {
         
@@ -141,14 +137,25 @@ class WriteRecipeViewController: UIViewController {
         guard let delegate = UIApplication.shared.delegate as? AppDelegate else { return }
 
         // get recipe properties
-        let id: Int = CoreDataController.generateId()
-        let name: String = recipeNameTf.text ?? ""
-        let prepTime: Int = Int(prepTimeTf.text ?? "") ?? 0
-        let cookingTime: Int = Int(cookingTimeTf.text ?? "") ?? 0
+        //if (recipe.id == 0) {recipe.id = CoreDataController.generateId()}
+        if (recipe.id == 0) {
+            print("generating id for new recipe...")
+            recipe.id = CoreDataController.generateId()
+        }
+        //let recipe.name = recipeNameTf.text ?? ""
+        recipe.name = recipeNameTf.text ?? ""
+        recipe.prepTime = Int(prepTimeTf.text ?? "") ?? 0
+        recipe.cookingTime = Int(cookingTimeTf.text ?? "") ?? 0
+        recipe.ingredients = ingredients
+        recipe.methods = methods
         
-        // create and save recipe
-        let recipe = Recipe(id: id, name: name, prepTime: prepTime, cookingTime: cookingTime, ingredients: ingredients, methods: methodsFinal)
-        CoreDataController.saveRecipeData(delegate: delegate, recipe: recipe)
+        if (!CoreDataController.hasRecipe(delegate: delegate, recipe: recipe)) {
+            print("adding new recipe")
+            CoreDataController.saveRecipeData(delegate: delegate, recipe: recipe)
+        } else {
+            print ("updating existing recipe")
+            CoreDataController.updateRecipeData(delegate: delegate, recipe: recipe)
+        }
     }
     
     // function that is called before segue
@@ -229,12 +236,12 @@ extension WriteRecipeViewController: UITableViewDelegate, UITableViewDataSource 
         }
         else if (tableView == methodsTv) {
             // get method data
-            let method = methodsFinal[indexPath.row]
+            let method = methods[indexPath.row]
             
             // initialise tableview cell and set cell text
             let cell = methodsTv.dequeueReusableCell(withIdentifier: "MethodCell", for: indexPath)
             cell.textLabel?.numberOfLines = 0
-            cell.textLabel?.text = method
+            cell.textLabel?.text = "\(indexPath.row + 1). \(method)"
             
             // return the cell
             return cell
@@ -247,10 +254,46 @@ extension WriteRecipeViewController: UITableViewDelegate, UITableViewDataSource 
     
     // function that will allow the methods to be reordered by hold and drag
     func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
-        let movedObject = self.methods[sourceIndexPath.row]
-        methods.remove(at: sourceIndexPath.row)
-        methods.insert(movedObject, at: destinationIndexPath.row)
-        self.updateMethodNumber()
+        
+        if (tableView == ingredientsTv) {
+            // get the moved object
+            let movedObject = self.ingredients[sourceIndexPath.row]
+            // remove and reinsert moved object into ingredients array
+            ingredients.remove(at: sourceIndexPath.row)
+            ingredients.insert(movedObject, at: destinationIndexPath.row)
+            // refresh tableview data
+            ingredientsTv.reloadData()
+        }
+        else if (tableView == methodsTv) {
+            // get the moved object
+            let movedObject = self.methods[sourceIndexPath.row]
+            methods.remove(at: sourceIndexPath.row)
+            methods.insert(movedObject, at: destinationIndexPath.row)
+            // refresh tableview data
+            methodsTv.reloadData()
+        }
+    }
+    
+    // function to delete tableview rows
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if (editingStyle == .delete) {
+            if (tableView == ingredientsTv) {
+                ingredients.remove(at: indexPath.row)
+                
+                ingredientsTv.beginUpdates()
+                ingredientsTv.deleteRows(at: [indexPath], with: .automatic)
+                ingredientsTv.endUpdates()
+                ingredientsTv.reloadData()
+            }
+            else if (tableView == methodsTv) {
+                methods.remove(at: indexPath.row)
+                
+                methodsTv.beginUpdates()
+                methodsTv.deleteRows(at: [indexPath], with: .automatic)
+                methodsTv.endUpdates()
+                methodsTv.reloadData()
+            }
+        }
     }
 }
 
