@@ -8,10 +8,14 @@ class CoreDataController {
     
     // function to randomly generate unique id for recipe
     static func generateId() -> Int {
-        let id: Int = Int(arc4random())
+        var id: Int = Int(arc4random())
+        
+        // ensures the generated id is positive
+        if (id < 0) {
+            id = id * -1
+        }
         
         // todo: implement code to ensure id is unique (jacob)
-        
         return id
     }
     
@@ -48,7 +52,6 @@ class CoreDataController {
         
         // if there are no recipes, return a null object
         return NSManagedObject()
-        
     }
     
     // function to save recipe to core data
@@ -56,12 +59,13 @@ class CoreDataController {
         
         // set up context and entity data
         let context = delegate.persistentContainer.viewContext
-        let entity =   NSEntityDescription.entity(forEntityName: "RecipeData", in: context)!
+        let entity = NSEntityDescription.entity(forEntityName: "RecipeData", in: context)!
         
         // create object to be saved
         let recipeData = NSManagedObject(entity: entity, insertInto: context)
         
-        // insert values into objectg
+        // insert values into object
+        recipeData.setValue(recipe.id, forKey: "id")
         recipeData.setValue(recipe.name, forKey: "name")
         recipeData.setValue(recipe.prepTime, forKey: "prepTime")
         recipeData.setValue(recipe.cookingTime, forKey: "cookingTime")
@@ -75,6 +79,24 @@ class CoreDataController {
     
     // todo: implement function to update existing recipe (andy)
     static func updateRecipeData() {
+    }
+    
+    // funciton to delete a recipe from core data
+    static func deleteRecipeData(delegate: AppDelegate, id: Int) {
         
+        // set up the context and get a list of all recipes in the core data
+        let context = delegate.persistentContainer.viewContext
+        let recipeData = getRecipeData(delegate: delegate)
+        
+        // look for the recipe that has a matching name and delete it
+        for data in recipeData {
+            if(data.value(forKey: "id") as? Int == id) {
+                context.delete(data)
+            }
+        }
+        
+        // attempt to save the recipes without the deleted recipe
+        do { try context.save() }
+        catch let error as NSError { print("Could not save. \(error), \(error.userInfo)") }
     }
 }
