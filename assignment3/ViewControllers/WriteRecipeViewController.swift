@@ -32,11 +32,14 @@ class WriteRecipeViewController: UIViewController {
     // arrays for ingredients and methods
     var ingredients: [String] = []
     var methods: [String] = []
+    var methodSteps: [Int] = []
+    var methodsFinal: [String] = []
     
     
     // function called when view is loaded
     override func viewDidLoad() {
         super.viewDidLoad()
+        methodsTv.isEditing = true
         
         imageController.delegate = self
 
@@ -105,6 +108,12 @@ class WriteRecipeViewController: UIViewController {
         if let method: String = methodTf.text {
             // add method to list
             methods.append(method)
+            // add number of method to list
+            methodSteps.append(methods.count)
+            // combine both method and number to form a new string
+            methodsFinal.append("\(methods.count). \((method))")
+            // update
+            updateMethodNumber()
             
             // empty method input fields
             methodTf.text = ""
@@ -115,6 +124,13 @@ class WriteRecipeViewController: UIViewController {
             methodsTv.beginUpdates()
             methodsTv.insertRows(at: [indexPath], with: .bottom)
             methodsTv.endUpdates()
+        }
+    }
+    
+    // function that will renumber steps when there is a reorder of methods
+    func updateMethodNumber() {
+        for i in 0...methods.count-1 {
+            methodsFinal[i] = "\(methodSteps[i]). \(methods[i])"
         }
     }
     
@@ -131,7 +147,7 @@ class WriteRecipeViewController: UIViewController {
         let cookingTime: Int = Int(cookingTimeTf.text ?? "") ?? 0
         
         // create and save recipe
-        let recipe = Recipe(id: id, name: name, prepTime: prepTime, cookingTime: cookingTime, ingredients: ingredients, methods: methods)
+        let recipe = Recipe(id: id, name: name, prepTime: prepTime, cookingTime: cookingTime, ingredients: ingredients, methods: methodsFinal)
         CoreDataController.saveRecipeData(delegate: delegate, recipe: recipe)
     }
     
@@ -160,7 +176,7 @@ extension WriteRecipeViewController: UITextFieldDelegate {
         
         // set character limit based off the textfield selected
         if (textField == ingredientQtyTf || textField == prepTimeTf || textField == cookingTimeTf) {
-            charLimit = 4
+            charLimit = 3
             // also character allowed characters to numbers only
             allowedCharacters = CharacterSet.decimalDigits
         }
@@ -213,7 +229,7 @@ extension WriteRecipeViewController: UITableViewDelegate, UITableViewDataSource 
         }
         else if (tableView == methodsTv) {
             // get method data
-            let method = methods[indexPath.row]
+            let method = methodsFinal[indexPath.row]
             
             // initialise tableview cell and set cell text
             let cell = methodsTv.dequeueReusableCell(withIdentifier: "MethodCell", for: indexPath)
@@ -227,6 +243,14 @@ extension WriteRecipeViewController: UITableViewDelegate, UITableViewDataSource 
         // if no table is found return an empty cell
         print("No Table Found")
         return UITableViewCell()
+    }
+    
+    // function that will allow the methods to be reordered by hold and drag
+    func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+        let movedObject = self.methods[sourceIndexPath.row]
+        methods.remove(at: sourceIndexPath.row)
+        methods.insert(movedObject, at: destinationIndexPath.row)
+        self.updateMethodNumber()
     }
 }
 
