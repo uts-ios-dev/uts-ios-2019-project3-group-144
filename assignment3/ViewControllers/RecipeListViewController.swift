@@ -61,7 +61,6 @@ class RecipeListViewController: UIViewController {
             let recipe = Recipe(id: id, name: name, prepTime: prepTime, cookingTime: cookingTime, ingredients: ingredients, methods: methods)
             recipes.append(recipe)
         }
-        
     }
 }
 
@@ -82,5 +81,30 @@ extension RecipeListViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         performSegue(withIdentifier: "RecipeListToViewRecipe", sender: indexPath)
+    }
+    
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]?
+    {
+        let deleteAction = UITableViewRowAction(style: .default, title: "Delete" , handler: { (action:UITableViewRowAction, indexPath:IndexPath) -> Void in
+            
+            let deleteMenu = UIAlertController(title: nil, message: "Delete this recipe?", preferredStyle: .actionSheet)
+            
+            let recipeDeleteAction = UIAlertAction(title: "Delete", style: .default, handler: { action in
+                guard let delegate = UIApplication.shared.delegate as? AppDelegate else { return }
+                let recipe = self.recipes[indexPath.row]
+                let id = recipe.id
+                self.recipes.remove(at: indexPath.row)
+                tableView.deleteRows(at: [indexPath], with: UITableView.RowAnimation.automatic)
+                CoreDataController.deleteRecipeData(delegate: delegate, id: id)
+            })
+            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+            
+            deleteMenu.addAction(recipeDeleteAction)
+            deleteMenu.addAction(cancelAction)
+            
+            self.present(deleteMenu, animated: true, completion: nil)
+        })
+        
+        return [deleteAction]
     }
 }
