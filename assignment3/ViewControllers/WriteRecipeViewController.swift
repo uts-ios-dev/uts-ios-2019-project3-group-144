@@ -22,13 +22,23 @@ class WriteRecipeViewController: UIViewController {
     @IBOutlet weak var ingredientsTvHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var methodsTvHeightConstraint: NSLayoutConstraint!
     
+    // imageview outlets
+    @IBOutlet weak var addFromCameraRollBtn: UIButton!
+    @IBOutlet weak var addFromCameraBtn: UIButton!
+    @IBOutlet weak var recipeIv: UIImageView!
+    var imageController = UIImagePickerController()
+    
+    
     // arrays for ingredients and methods
     var ingredients: [String] = []
     var methods: [String] = []
     
+    
     // function called when view is loaded
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        imageController.delegate = self
 
         // empty out tableviews
         ingredientsTv.tableFooterView = UIView(frame: CGRect.zero)
@@ -51,6 +61,19 @@ class WriteRecipeViewController: UIViewController {
     
     @IBAction func onAddMethodBtnPressed(_ sender: Any) {
         addMethod()
+    }
+    
+    @IBAction func addImage(_ sender: UIButton) {
+        if (sender == addFromCameraBtn) {
+            imageController.sourceType = .camera
+            imageController.allowsEditing = false
+            present(imageController, animated: true, completion: nil)
+        } else if (sender == addFromCameraRollBtn) {
+            imageController.sourceType = .photoLibrary
+            imageController.allowsEditing = true
+            present(imageController, animated: true, completion: nil)
+        }
+        
     }
     
     // function to add ingredients
@@ -111,42 +134,6 @@ class WriteRecipeViewController: UIViewController {
         let recipe = Recipe(id: id, name: name, prepTime: prepTime, cookingTime: cookingTime, ingredients: ingredients, methods: methods)
         CoreDataController.saveRecipeData(delegate: delegate, recipe: recipe)
     }
-    
-    /*
-        camera implementation code
-        written by mudaqus, to be implemented by jacob
-     
-     @IBOutlet weak var img: UIImageView!
-     var imageController = UIImagePickerController()
-     
-     override func viewDidLoad() {
-     super.viewDidLoad()
-     imageController.delegate = self
-     // Do any additional setup after loading the view, typically from a nib.
-     }
-     @IBAction func btnPressed(_ sender: Any) {
-     imageController.sourceType = .photoLibrary
-     imageController.allowsEditing = true
-     present(imageController, animated: true, completion: nil)
-     }
-     
-     @IBAction func btnCapture(_ sender: Any) {
-     imageController.sourceType = .camera
-     imageController.allowsEditing = false
-     self.present(imageController, animated: true, completion: nil)
-     }
-     
-     }
-     
-     extension ViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-     if let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
-     img.image = image
-     }
-     dismiss(animated: true, completion: nil)
-     }
-     }
-    */
     
     // function that is called before segue
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -240,5 +227,14 @@ extension WriteRecipeViewController: UITableViewDelegate, UITableViewDataSource 
         // if no table is found return an empty cell
         print("No Table Found")
         return UITableViewCell()
+    }
+}
+
+extension WriteRecipeViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        if let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
+            recipeIv.image = image
+        }
+        dismiss(animated: true, completion: nil)
     }
 }
