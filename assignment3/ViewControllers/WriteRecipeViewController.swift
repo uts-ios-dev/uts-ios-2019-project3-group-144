@@ -22,6 +22,9 @@ class WriteRecipeViewController: UIViewController {
     @IBOutlet weak var ingredientsTvHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var methodsTvHeightConstraint: NSLayoutConstraint!
     
+    
+    @IBOutlet weak var contentsSv: UIScrollView!
+    
     // imageview outlets
     @IBOutlet weak var addFromCameraRollBtn: UIButton!
     @IBOutlet weak var addFromCameraBtn: UIButton!
@@ -69,10 +72,16 @@ class WriteRecipeViewController: UIViewController {
 
     @IBAction func onAddIngredientBtnPressed(_ sender: Any) {
         addIngredient()
+        
+        let bottomOffset = CGPoint(x: 0, y: contentsSv.contentSize.height - contentsSv.bounds.size.height)
+        contentsSv.setContentOffset(bottomOffset, animated: true)
     }
     
     @IBAction func onAddMethodBtnPressed(_ sender: Any) {
         addMethod()
+        
+        let bottomOffset = CGPoint(x: 0, y: contentsSv.contentSize.height - contentsSv.bounds.size.height)
+        contentsSv.setContentOffset(bottomOffset, animated: true)
     }
     
     @IBAction func addImage(_ sender: UIButton) {
