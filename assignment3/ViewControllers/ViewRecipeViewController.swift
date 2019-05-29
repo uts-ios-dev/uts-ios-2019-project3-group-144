@@ -118,7 +118,7 @@ extension ViewRecipeViewController: UITableViewDelegate, UITableViewDataSource {
             let method = methods[indexPath.row]
             let cell = methodsTv.dequeueReusableCell(withIdentifier: "MethodCell", for: indexPath)
             cell.textLabel?.numberOfLines = 0
-            cell.textLabel?.text = method
+            cell.textLabel?.text = "\(indexPath.row + 1). \(method)"
             cell.selectionStyle = .none
             return cell
         }

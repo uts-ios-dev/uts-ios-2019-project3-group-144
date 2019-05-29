@@ -29,7 +29,7 @@ class WriteRecipeViewController: UIViewController {
     @IBOutlet weak var addFromCameraRollBtn: UIButton!
     @IBOutlet weak var addFromCameraBtn: UIButton!
     @IBOutlet weak var recipeIv: UIImageView!
-    var imageController = UIImagePickerController()
+    var imagePickerController = UIImagePickerController()
     
     // filemanager variables
 
@@ -47,7 +47,7 @@ class WriteRecipeViewController: UIViewController {
         super.viewDidLoad()
         methodsTv.isEditing = true
         ingredientsTv.isEditing = true
-        imageController.delegate = self
+        imagePickerController.delegate = self
         
         // set up initial values for entry fields
         recipeNameTf.text = recipe.name
@@ -77,26 +77,26 @@ class WriteRecipeViewController: UIViewController {
     @IBAction func onAddIngredientBtnPressed(_ sender: Any) {
         addIngredient()
         
-        let bottomOffset = CGPoint(x: 0, y: contentsSv.contentSize.height - contentsSv.bounds.size.height)
-        contentsSv.setContentOffset(bottomOffset, animated: true)
+        //let bottomOffset = CGPoint(x: 0, y: contentsSv.contentSize.height - contentsSv.bounds.size.height)
+        //contentsSv.setContentOffset(bottomOffset, animated: true)
     }
     
     @IBAction func onAddMethodBtnPressed(_ sender: Any) {
         addMethod()
         
-        let bottomOffset = CGPoint(x: 0, y: contentsSv.contentSize.height - contentsSv.bounds.size.height)
-        contentsSv.setContentOffset(bottomOffset, animated: true)
+        //let bottomOffset = CGPoint(x: 0, y: contentsSv.contentSize.height - contentsSv.bounds.size.height)
+        //contentsSv.setContentOffset(bottomOffset, animated: true)
     }
     
     @IBAction func addImage(_ sender: UIButton) {
         if (sender == addFromCameraBtn) {
-            imageController.sourceType = .camera
-            imageController.allowsEditing = false
-            present(imageController, animated: true, completion: nil)
+            imagePickerController.sourceType = .camera
+            //imagePickerController.allowsEditing = false
+            present(imagePickerController, animated: true, completion: nil)
         } else if (sender == addFromCameraRollBtn) {
-            imageController.sourceType = .photoLibrary
-            imageController.allowsEditing = true
-            present(imageController, animated: true, completion: nil)
+            imagePickerController.sourceType = .photoLibrary
+            //imagePickerController.allowsEditing = true
+            present(imagePickerController, animated: true, completion: nil)
         }
         
     }
@@ -157,7 +157,6 @@ class WriteRecipeViewController: UIViewController {
         }
         //let recipe.name = recipeNameTf.text ?? ""
         recipe.name = recipeNameTf.text ?? ""
-        recipe.imageName = ImageController.saveImage(image: recipeIv.image ?? #imageLiteral(resourceName: "default"), recipe: recipe) ?? ""
         recipe.prepTime = Int(prepTimeTf.text ?? "") ?? 0
         recipe.cookingTime = Int(cookingTimeTf.text ?? "") ?? 0
         recipe.ingredients = ingredients
@@ -165,9 +164,12 @@ class WriteRecipeViewController: UIViewController {
         
         if (!CoreDataController.hasRecipe(delegate: delegate, recipe: recipe)) {
             print("adding new recipe")
+            recipe.imageName = ImageController.saveImage(image: recipeIv.image ?? #imageLiteral(resourceName: "default"), recipe: recipe) ?? ""
             CoreDataController.saveRecipeData(delegate: delegate, recipe: recipe)
         } else {
             print ("updating existing recipe")
+            let initialImage: UIImage = ImageController.getImage(imageName: recipe.imageName) ?? #imageLiteral(resourceName: "default")
+            ImageController.updateImage(imageName: recipe.imageName, newImage: recipeIv.image ?? initialImage)
             CoreDataController.updateRecipeData(delegate: delegate, recipe: recipe)
         }
     }
