@@ -68,6 +68,7 @@ class CoreDataController {
         // insert values into object
         recipeData.setValue(recipe.id, forKey: "id")
         recipeData.setValue(recipe.name, forKey: "name")
+        recipeData.setValue(recipe.imageName, forKey: "imageName")
         recipeData.setValue(recipe.prepTime, forKey: "prepTime")
         recipeData.setValue(recipe.cookingTime, forKey: "cookingTime")
         recipeData.setValue(recipe.ingredients, forKey: "ingredients")

@@ -330,6 +330,7 @@
                         <outlet property="methodsTv" destination="yuo-se-jgE" id="AaP-77-QOz"/>
                         <outlet property="methodsTvHeightConstraint" destination="bYv-GB-2BF" id="uom-iw-9ni"/>
                         <outlet property="prepTimeLbl" destination="i79-iC-w4g" id="5Mg-9f-9kt"/>
+                        <outlet property="recipeIv" destination="0ty-Yg-QSZ" id="5JO-pJ-mJY"/>
                         <outlet property="recipeNameLbl" destination="qWN-2Y-mAh" id="2Py-Yt-qro"/>
                     </connections>
                 </viewController>
@@ -721,6 +722,6 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="MhI-BW-Lxn"/>
-        <segue reference="hyV-PX-wYr"/>
+        <segue reference="rjO-dr-4Ka"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -3,12 +3,13 @@
     <entity name="RecipeData" representedClassName="RecipeData" syncable="YES" codeGenerationType="class">
         <attribute name="cookingTime" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="id" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="imageName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="ingredients" optional="YES" attributeType="Transformable" customClassName="[String]" syncable="YES"/>
         <attribute name="methods" optional="YES" attributeType="Transformable" customClassName="[String]" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="prepTime" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
     </entity>
     <elements>
-        <element name="RecipeData" positionX="-63" positionY="-18" width="128" height="135"/>
+        <element name="RecipeData" positionX="-63" positionY="-18" width="128" height="150"/>
     </elements>
 </model>

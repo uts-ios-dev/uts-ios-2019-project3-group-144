@@ -21,8 +21,8 @@ class WriteRecipeViewController: UIViewController {
     @IBOutlet weak var methodsTv: UITableView!
     @IBOutlet weak var ingredientsTvHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var methodsTvHeightConstraint: NSLayoutConstraint!
-    
-    
+
+    // scrollview outlets
     @IBOutlet weak var contentsSv: UIScrollView!
     
     // imageview outlets
@@ -31,8 +31,11 @@ class WriteRecipeViewController: UIViewController {
     @IBOutlet weak var recipeIv: UIImageView!
     var imageController = UIImagePickerController()
     
+    // filemanager variables
+
+    
     // recipe object to be saved
-    var recipe: Recipe = Recipe(id: 0, name: "", prepTime: 0, cookingTime: 0, ingredients: [], methods: [])
+    var recipe: Recipe = Recipe(id: 0, name: "", imageName: "", prepTime: 0, cookingTime: 0, ingredients: [], methods: [])
     
     // arrays for ingredients and methods
     var ingredients: [String] = []
@@ -48,6 +51,7 @@ class WriteRecipeViewController: UIViewController {
         
         // set up initial values for entry fields
         recipeNameTf.text = recipe.name
+        recipeIv.image = ImageController.getImage(imageName: recipe.imageName) 
         prepTimeTf.text = String(recipe.prepTime)
         cookingTimeTf.text = String(recipe.cookingTime)
         ingredients = recipe.ingredients
@@ -153,6 +157,7 @@ class WriteRecipeViewController: UIViewController {
         }
         //let recipe.name = recipeNameTf.text ?? ""
         recipe.name = recipeNameTf.text ?? ""
+        recipe.imageName = ImageController.saveImage(image: recipeIv.image ?? #imageLiteral(resourceName: "default"), recipe: recipe) ?? ""
         recipe.prepTime = Int(prepTimeTf.text ?? "") ?? 0
         recipe.cookingTime = Int(cookingTimeTf.text ?? "") ?? 0
         recipe.ingredients = ingredients

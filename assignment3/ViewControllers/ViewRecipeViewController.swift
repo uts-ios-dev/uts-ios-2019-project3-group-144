@@ -8,6 +8,8 @@ class ViewRecipeViewController: UIViewController {
     @IBOutlet weak var prepTimeLbl: UILabel!
     @IBOutlet weak var cookingTimeLbl: UILabel!
     
+    @IBOutlet weak var recipeIv: UIImageView!
+    
     // tableview outlets
     @IBOutlet weak var ingredientsTv: UITableView!
     @IBOutlet weak var methodsTv: UITableView!
@@ -15,7 +17,7 @@ class ViewRecipeViewController: UIViewController {
     @IBOutlet weak var methodsTvHeightConstraint: NSLayoutConstraint!
     
     // recipe object
-    var recipe: Recipe = Recipe(id: 0, name: "", prepTime: 0, cookingTime: 0, ingredients: [], methods: [])
+    var recipe: Recipe = Recipe(id: 0, name: "", imageName: "", prepTime: 0, cookingTime: 0, ingredients: [], methods: [])
     
     // arrays for ingredients and methods
     var ingredients: [String] = []
@@ -27,6 +29,7 @@ class ViewRecipeViewController: UIViewController {
 
         // insert recipe data into appropriate fields
         recipeNameLbl.text = recipe.name
+        recipeIv.image = ImageController.getImage(imageName: recipe.imageName)
         
         let prepTime = minutesToHours(minutes: recipe.prepTime)
         

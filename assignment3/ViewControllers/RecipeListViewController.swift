@@ -52,13 +52,14 @@ class RecipeListViewController: UIViewController {
             // initialise recipe variables
             let id = data.value(forKey: "id") as? Int ?? 0
             let name = data.value(forKey: "name") as? String ?? "NULL"
+            let imageName = data.value(forKey: "imageName") as? String ?? "NULL"
             let prepTime = data.value(forKey: "prepTime") as? Int ?? 0
             let cookingTime = data.value(forKey: "cookingTime") as? Int ?? 0
             let ingredients = data.value(forKey: "ingredients") as? [String] ?? []
             let methods = data.value(forKey: "methods") as? [String] ?? []
             
             // create the recipe and add it to the recipe list
-            let recipe = Recipe(id: id, name: name, prepTime: prepTime, cookingTime: cookingTime, ingredients: ingredients, methods: methods)
+            let recipe = Recipe(id: id, name: name, imageName: imageName, prepTime: prepTime, cookingTime: cookingTime, ingredients: ingredients, methods: methods)
             recipes.append(recipe)
         }
     }
