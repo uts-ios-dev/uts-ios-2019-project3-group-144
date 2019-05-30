@@ -14,14 +14,22 @@ class RecipeListViewController: UIViewController {
     // outlets
     @IBOutlet weak var recipeSearchBr: UISearchBar!
     @IBOutlet weak var recipeTblView: UITableView!
+    @IBOutlet weak var btnMenu: UIButton!
     
     // array for recipes
     var recipes: [Recipe] = []
+    var orginalRecipes: [Recipe] = []
+    var sortedByTime: [Recipe] = []
+    var sortedAlphabetically: [Recipe] = []
     
     // function called when view is loaded
     override func viewDidLoad() {
         super.viewDidLoad()
+        addGesture()
         getRecipes()
+        orginalRecipes = recipes
+        sortedByTime = recipes.sorted(by: { $0.prepTime > $1.prepTime })
+        sortedAlphabetically = recipes.sorted(by: { $0.name < $1.name })
     }
     
     // function called before sefue
@@ -62,6 +70,34 @@ class RecipeListViewController: UIViewController {
             let recipe = Recipe(id: id, name: name, imageName: imageName, prepTime: prepTime, cookingTime: cookingTime, ingredients: ingredients, methods: methods)
             recipes.append(recipe)
         }
+    }
+    
+    func addGesture() {
+        let tap = UITapGestureRecognizer(target: self, action: #selector(RecipeListViewController.showActionSheet))
+        btnMenu.addGestureRecognizer(tap)
+    }
+    
+    @objc func showActionSheet() {
+        let actionSheet = UIAlertController(title: "Sort Type", message: "", preferredStyle: .actionSheet)
+        let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        let orignal = UIAlertAction(title: "Orignal", style: .default) { action in
+            self.recipes = self.orginalRecipes
+        }
+        
+        let timeSort = UIAlertAction(title: "by Time", style: .default) { action in
+            self.recipes = self.sortedByTime
+        }
+        
+        let alphabetically = UIAlertAction(title: "Alphabetically", style: .default) { action in
+            self.recipes = self.sortedAlphabetically
+        }
+        
+        actionSheet.addAction(orignal)
+        actionSheet.addAction(timeSort)
+        actionSheet.addAction(alphabetically)
+        actionSheet.addAction(cancel)
+        
+        present(actionSheet, animated: true, completion: nil)
     }
 }
 
