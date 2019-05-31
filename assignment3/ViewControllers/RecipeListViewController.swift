@@ -18,7 +18,7 @@ class RecipeListViewController: UIViewController {
     
     // array for recipes
     var recipes: [Recipe] = []
-    var orginalRecipes: [Recipe] = []
+    var originalRecipes: [Recipe] = []
     var sortedByTime: [Recipe] = []
     var sortedAlphabetically: [Recipe] = []
     
@@ -27,7 +27,7 @@ class RecipeListViewController: UIViewController {
         super.viewDidLoad()
         addGesture()
         getRecipes()
-        orginalRecipes = recipes
+        originalRecipes = recipes
         sortedByTime = recipes.sorted(by: { $0.prepTime > $1.prepTime })
         sortedAlphabetically = recipes.sorted(by: { $0.name < $1.name })
     }
@@ -81,15 +81,18 @@ class RecipeListViewController: UIViewController {
         let actionSheet = UIAlertController(title: "Sort Type", message: "", preferredStyle: .actionSheet)
         let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
         let orignal = UIAlertAction(title: "Orignal", style: .default) { action in
-            self.recipes = self.orginalRecipes
+            self.recipes = self.originalRecipes
+            self.recipeTblView.reloadData()
         }
         
         let timeSort = UIAlertAction(title: "by Time", style: .default) { action in
             self.recipes = self.sortedByTime
+            self.recipeTblView.reloadData()
         }
         
         let alphabetically = UIAlertAction(title: "Alphabetically", style: .default) { action in
             self.recipes = self.sortedAlphabetically
+            self.recipeTblView.reloadData()
         }
         
         actionSheet.addAction(orignal)
@@ -112,7 +115,7 @@ extension RecipeListViewController: UITableViewDelegate, UITableViewDataSource {
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let recipe = recipes[indexPath.row]
         let cell = UITableViewCell(style: UITableViewCell.CellStyle.default, reuseIdentifier: "RecipeCell")
-        cell.textLabel?.text = recipe.name
+        cell.textLabel?.text = "\(recipe.name) | \(recipe.prepTime + recipe.cookingTime) minutes"
         return cell
     }
     
