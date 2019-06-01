@@ -14,7 +14,8 @@ class RecipeListViewController: UIViewController {
     // outlets
     @IBOutlet weak var recipeSearchBr: UISearchBar!
     @IBOutlet weak var recipeTblView: UITableView!
-    @IBOutlet weak var btnMenu: UIButton!
+    @IBOutlet weak var btnMenu: UIBarButtonItem!
+    @IBOutlet weak var placeholderLbl: UILabel!
     
     // array for recipes
     var recipes: [Recipe] = []
@@ -25,6 +26,7 @@ class RecipeListViewController: UIViewController {
     // function called when view is loaded
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.tabBarController?.tabBar.isHidden = false
         recipeTblView.tableFooterView = UIView(frame: CGRect.zero)
         addGesture()
         getRecipes()
@@ -32,6 +34,7 @@ class RecipeListViewController: UIViewController {
         sortedByTime = recipes.sorted(by: { $0.prepTime > $1.prepTime })
         sortedAlphabetically = recipes.sorted(by: { $0.name < $1.name })
     }
+    
     
     // function called before sefue
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -74,9 +77,14 @@ class RecipeListViewController: UIViewController {
     }
     
     func addGesture() {
-        let tap = UITapGestureRecognizer(target: self, action: #selector(RecipeListViewController.showActionSheet))
-        btnMenu.addGestureRecognizer(tap)
+        //let tap = UITapGestureRecognizer(target: self, action: #selector(RecipeListViewController.showActionSheet))
+        //btnMenu.addGestureRecognizer(tap)
     }
+    
+    @IBAction func onPressSortBtn(_ sender: Any) {
+        showActionSheet()
+    }
+    
     
     @objc func showActionSheet() {
         let actionSheet = UIAlertController(title: "Sort Type", message: "", preferredStyle: .actionSheet)
@@ -110,6 +118,8 @@ extension RecipeListViewController: UITableViewDelegate, UITableViewDataSource {
     
     //
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if (recipes.count > 0) { placeholderLbl.isHidden = true }
+        else { placeholderLbl.isHidden = false }
         return recipes.count
     }
     
