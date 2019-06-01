@@ -20,7 +20,8 @@ class RecipeListViewController: UIViewController {
     // array for recipes
     var recipes: [Recipe] = []
     var originalRecipes: [Recipe] = []
-    var sortedByTime: [Recipe] = []
+    var sortedByTimeMax: [Recipe] = []
+    var sortedByTimeMin: [Recipe] = []
     var sortedAlphabetically: [Recipe] = []
     
     // function called when view is loaded
@@ -31,7 +32,8 @@ class RecipeListViewController: UIViewController {
         addGesture()
         getRecipes()
         originalRecipes = recipes
-        sortedByTime = recipes.sorted(by: { $0.prepTime > $1.prepTime })
+        sortedByTimeMax = recipes.sorted(by: { $0.prepTime > $1.prepTime })
+        sortedByTimeMin = recipes.sorted(by: { $0.prepTime < $1.prepTime })
         sortedAlphabetically = recipes.sorted(by: { $0.name < $1.name })
     }
     
@@ -94,8 +96,13 @@ class RecipeListViewController: UIViewController {
             self.recipeTblView.reloadData()
         }
         
-        let timeSort = UIAlertAction(title: "by Time", style: .default) { action in
-            self.recipes = self.sortedByTime
+        let timeSortMax = UIAlertAction(title: "by Time (Max)", style: .default) { action in
+            self.recipes = self.sortedByTimeMax
+            self.recipeTblView.reloadData()
+        }
+        
+        let timeSortMin = UIAlertAction(title: "by Time (Min)", style: .default) { action in
+            self.recipes = self.sortedByTimeMin
             self.recipeTblView.reloadData()
         }
         
@@ -105,7 +112,8 @@ class RecipeListViewController: UIViewController {
         }
         
         actionSheet.addAction(orignal)
-        actionSheet.addAction(timeSort)
+        actionSheet.addAction(timeSortMax)
+        actionSheet.addAction(timeSortMin)
         actionSheet.addAction(alphabetically)
         actionSheet.addAction(cancel)
         
