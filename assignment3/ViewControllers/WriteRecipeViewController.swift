@@ -13,6 +13,8 @@ class WriteRecipeViewController: UIViewController {
     @IBOutlet weak var prepTimeTf: UITextField!
     @IBOutlet weak var cookingTimeTf: UITextField!
     @IBOutlet weak var ingredientQtyTf: UITextField!
+    @IBOutlet weak var measurementType: UITextField!
+    
     @IBOutlet weak var ingredientNameTf: UITextField!
     @IBOutlet weak var methodTf: UITextField!
     
@@ -33,6 +35,11 @@ class WriteRecipeViewController: UIViewController {
     
     // filemanager variables
 
+    
+    //pickerView measurements
+    let measurement = ["Grahms","milligram", "Kilogram", "Cup/s"]
+    var selectedMeasurement : String?
+    
     
     // recipe object to be saved
     var recipe: Recipe = Recipe(id: 0, name: "", imageName: "", prepTime: 0, cookingTime: 0, ingredients: [], methods: [])
@@ -60,6 +67,7 @@ class WriteRecipeViewController: UIViewController {
         // empty out tableviews
         ingredientsTv.tableFooterView = UIView(frame: CGRect.zero)
         methodsTv.tableFooterView = UIView(frame: CGRect.zero)
+        createMeasurementPicker()
     }
     
     override func viewDidLayoutSubviews() {
@@ -74,6 +82,14 @@ class WriteRecipeViewController: UIViewController {
         methodsTv.reloadData()
     }
 
+    func createMeasurementPicker(){
+        let measurementPicker = UIPickerView()
+        measurementPicker.delegate = self
+        measurementType.inputView = measurementPicker
+        
+    }
+    
+    
     @IBAction func onAddIngredientBtnPressed(_ sender: Any) {
         addIngredient()
         
@@ -320,4 +336,27 @@ extension WriteRecipeViewController: UIImagePickerControllerDelegate, UINavigati
         }
         dismiss(animated: true, completion: nil)
     }
+}
+
+extension WriteRecipeViewController: UIPickerViewDataSource, UIPickerViewDelegate{
+    
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return measurement.count
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return measurement[row]
+    }
+    
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        selectedMeasurement = measurement[row]
+        measurementType.text = selectedMeasurement
+        
+    }
+    
 }
