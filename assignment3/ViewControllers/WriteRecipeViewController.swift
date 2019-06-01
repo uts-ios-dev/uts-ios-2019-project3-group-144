@@ -56,10 +56,14 @@ class WriteRecipeViewController: UIViewController {
         cookingTimeTf.text = String(recipe.cookingTime)
         ingredients = recipe.ingredients
         methods = recipe.methods
-
+        
         // empty out tableviews
         ingredientsTv.tableFooterView = UIView(frame: CGRect.zero)
         methodsTv.tableFooterView = UIView(frame: CGRect.zero)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        self.navigationController?.setNavigationBarHidden(false, animated: true)
     }
     
     override func viewDidLayoutSubviews() {
