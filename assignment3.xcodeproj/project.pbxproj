@@ -10,6 +10,7 @@
 		321B75C8229E906B00AD4CC8 /* ImageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 321B75C7229E906B00AD4CC8 /* ImageController.swift */; };
 		32433E792296892800FA3EC8 /* CoreDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32433E782296892800FA3EC8 /* CoreDataController.swift */; };
 		3255119D22A25E74007E1088 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3255119C22A25E74007E1088 /* SettingsViewController.swift */; };
+		328395AA22A2D317009BB4F2 /* Comfortaa[wght].ttf in Resources */ = {isa = PBXBuildFile; fileRef = 328395A922A2D317009BB4F2 /* Comfortaa[wght].ttf */; };
 		329472AE22900AF900A40885 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 329472AD22900AF900A40885 /* AppDelegate.swift */; };
 		329472B322900AF900A40885 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 329472B122900AF900A40885 /* Main.storyboard */; };
 		329472B622900AF900A40885 /* assignment3.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 329472B422900AF900A40885 /* assignment3.xcdatamodeld */; };
@@ -25,6 +26,7 @@
 		321B75C7229E906B00AD4CC8 /* ImageController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageController.swift; sourceTree = "<group>"; };
 		32433E782296892800FA3EC8 /* CoreDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataController.swift; sourceTree = "<group>"; };
 		3255119C22A25E74007E1088 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SettingsViewController.swift; path = ViewControllers/SettingsViewController.swift; sourceTree = "<group>"; };
+		328395A922A2D317009BB4F2 /* Comfortaa[wght].ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Comfortaa[wght].ttf"; sourceTree = "<group>"; };
 		329472AA22900AF900A40885 /* assignment3.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = assignment3.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		329472AD22900AF900A40885 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		329472B222900AF900A40885 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -49,6 +51,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		328395A822A2D2A9009BB4F2 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				328395A922A2D317009BB4F2 /* Comfortaa[wght].ttf */,
+			);
+			path = Fonts;
+			sourceTree = "<group>";
+		};
 		329472A122900AF900A40885 = {
 			isa = PBXGroup;
 			children = (
@@ -68,6 +78,7 @@
 		329472AC22900AF900A40885 /* assignment3 */ = {
 			isa = PBXGroup;
 			children = (
+				328395A822A2D2A9009BB4F2 /* Fonts */,
 				329472AD22900AF900A40885 /* AppDelegate.swift */,
 				329472B122900AF900A40885 /* Main.storyboard */,
 				329472B722900AF900A40885 /* Assets.xcassets */,
@@ -144,6 +155,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				329472BB22900AF900A40885 /* LaunchScreen.storyboard in Resources */,
+				328395AA22A2D317009BB4F2 /* Comfortaa[wght].ttf in Resources */,
 				329472B822900AF900A40885 /* Assets.xcassets in Resources */,
 				329472B322900AF900A40885 /* Main.storyboard in Resources */,
 			);

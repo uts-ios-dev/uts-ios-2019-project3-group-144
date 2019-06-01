@@ -31,10 +31,15 @@ class RecipeListViewController: UIViewController {
         recipeTblView.tableFooterView = UIView(frame: CGRect.zero)
         addGesture()
         getRecipes()
+        if (recipes.count < 1) { btnMenu.isEnabled = false }
         originalRecipes = recipes
         sortedByTimeMax = recipes.sorted(by: { $0.prepTime > $1.prepTime })
         sortedByTimeMin = recipes.sorted(by: { $0.prepTime < $1.prepTime })
-        sortedAlphabetically = recipes.sorted(by: { $0.name < $1.name })
+        sortedAlphabetically = recipes.sorted(by: { $0.name < $1.name })        
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        self.tabBarController?.tabBar.isHidden = false
     }
     
     
@@ -89,24 +94,24 @@ class RecipeListViewController: UIViewController {
     
     
     @objc func showActionSheet() {
-        let actionSheet = UIAlertController(title: "Sort Type", message: "", preferredStyle: .actionSheet)
-        let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-        let orignal = UIAlertAction(title: "Orignal", style: .default) { action in
+        let actionSheet = UIAlertController(title: "sort recipes", message: "", preferredStyle: .actionSheet)
+        let cancel = UIAlertAction(title: "cancel", style: .cancel, handler: nil)
+        let orignal = UIAlertAction(title: "by date created", style: .default) { action in
             self.recipes = self.originalRecipes
             self.recipeTblView.reloadData()
         }
         
-        let timeSortMax = UIAlertAction(title: "by Time (Max)", style: .default) { action in
+        let timeSortMax = UIAlertAction(title: "by time (max - min)", style: .default) { action in
             self.recipes = self.sortedByTimeMax
             self.recipeTblView.reloadData()
         }
         
-        let timeSortMin = UIAlertAction(title: "by Time (Min)", style: .default) { action in
+        let timeSortMin = UIAlertAction(title: "by time (min - max)", style: .default) { action in
             self.recipes = self.sortedByTimeMin
             self.recipeTblView.reloadData()
         }
         
-        let alphabetically = UIAlertAction(title: "Alphabetically", style: .default) { action in
+        let alphabetically = UIAlertAction(title: "by name", style: .default) { action in
             self.recipes = self.sortedAlphabetically
             self.recipeTblView.reloadData()
         }
@@ -124,17 +129,23 @@ class RecipeListViewController: UIViewController {
 // tableview functions
 extension RecipeListViewController: UITableViewDelegate, UITableViewDataSource {
     
-    //
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if (recipes.count > 0) { placeholderLbl.isHidden = true }
-        else { placeholderLbl.isHidden = false }
+        if (recipes.count > 0) {
+            placeholderLbl.isHidden = true
+            btnMenu.isEnabled = true
+        }
+        else {
+            placeholderLbl.isHidden = false
+            btnMenu.isEnabled = false
+        }
         return recipes.count
     }
     
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let recipe = recipes[indexPath.row]
         let cell = UITableViewCell(style: UITableViewCell.CellStyle.default, reuseIdentifier: "RecipeCell")
-        cell.textLabel?.text = "\(recipe.name) | \(recipe.prepTime + recipe.cookingTime) minutes"
+        cell.textLabel?.text = recipe.name
+        cell.textLabel?.font = UIFont(name: "Comfortaa-Regular", size: 14)
         return cell
     }
     
@@ -144,11 +155,11 @@ extension RecipeListViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]?
     {
-        let deleteAction = UITableViewRowAction(style: .default, title: "Delete" , handler: { (action:UITableViewRowAction, indexPath:IndexPath) -> Void in
+        let deleteAction = UITableViewRowAction(style: .default, title: "delete" , handler: { (action:UITableViewRowAction, indexPath:IndexPath) -> Void in
             
-            let deleteMenu = UIAlertController(title: nil, message: "Delete this recipe?", preferredStyle: .actionSheet)
+            let deleteMenu = UIAlertController(title: nil, message: "delete this recipe?", preferredStyle: .actionSheet)
             
-            let recipeDeleteAction = UIAlertAction(title: "Delete", style: .default, handler: { action in
+            let recipeDeleteAction = UIAlertAction(title: "delete", style: .default, handler: { action in
                 guard let delegate = UIApplication.shared.delegate as? AppDelegate else { return }
                 let recipe = self.recipes[indexPath.row]
                 let id = recipe.id
@@ -160,7 +171,7 @@ extension RecipeListViewController: UITableViewDelegate, UITableViewDataSource {
                 
                 CoreDataController.deleteRecipeData(delegate: delegate, id: id)
             })
-            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+            let cancelAction = UIAlertAction(title: "cancel", style: .cancel, handler: nil)
             
             deleteMenu.addAction(recipeDeleteAction)
             deleteMenu.addAction(cancelAction)

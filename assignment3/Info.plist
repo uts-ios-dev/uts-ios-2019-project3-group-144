@@ -28,6 +28,10 @@
 	<string>Your image is safe here!</string>
 	<key>NSCameraUsageDescription</key>
 	<string>Your camera is safe here!</string>
+	<key>UIAppFonts</key>
+	<array>
+		<string>Comfortaa[wght].ttf</string>
+	</array>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>armv7</string>

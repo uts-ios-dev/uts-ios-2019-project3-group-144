@@ -32,14 +32,9 @@ class WriteRecipeViewController: UIViewController {
     @IBOutlet weak var addFromCameraBtn: UIButton!
     @IBOutlet weak var recipeIv: UIImageView!
     var imagePickerController = UIImagePickerController()
-    
-    // filemanager variables
 
-    
-    
-    
     // pickerView measurements
-    let measurement = ["Grahms","milligram", "Kilogram", "Cup/s"]
+    let measurement = ["", "g","mg", "kg", "ml", "l", "cup"]
     var selectedMeasurement : String?
 
     
@@ -130,13 +125,26 @@ class WriteRecipeViewController: UIViewController {
         if let name: String = ingredientNameTf.text {
             if let quantity: Int = Int(ingredientQtyTf.text ?? "") {
                 
+                var ingredient: String = ""
+                let measurement: String = String(selectedMeasurement ?? "")
+                
+                if (measurement != "") {
+                    if (quantity != 1) { ingredient = "\(quantity)\(measurement)s \(name)"}
+                    else { ingredient = "\(quantity)\(measurement) \(name)"}
+                }
+                else {
+                    ingredient = "\(quantity) \(name)"
+                }
+                
                 // create ingredient string and add to list
-                let ingredient: String = String(quantity) + " \(name)"
+                //let ingredient: String = "\(String(quantity)) \(String(selectedMeasurement ?? "")) \(name)"
                 ingredients.append(ingredient)
                 
                 // empty ingredient input fields
                 ingredientQtyTf.text = ""
                 ingredientNameTf.text = ""
+                measurementType.text = ""
+                
                 view.endEditing(true)
                 
                 // insert new ingredient into tableview and update
@@ -175,7 +183,6 @@ class WriteRecipeViewController: UIViewController {
         // get recipe properties
         //if (recipe.id == 0) {recipe.id = CoreDataController.generateId()}
         if (recipe.id == 0) {
-            print("generating id for new recipe...")
             recipe.id = CoreDataController.generateId()
         }
         //let recipe.name = recipeNameTf.text ?? ""
@@ -186,11 +193,9 @@ class WriteRecipeViewController: UIViewController {
         recipe.methods = methods
         
         if (!CoreDataController.hasRecipe(delegate: delegate, recipe: recipe)) {
-            print("adding new recipe")
             recipe.imageName = ImageController.saveImage(image: recipeIv.image ?? #imageLiteral(resourceName: "default"), recipe: recipe) ?? ""
             CoreDataController.saveRecipeData(delegate: delegate, recipe: recipe)
         } else {
-            print ("updating existing recipe")
             let initialImage: UIImage = ImageController.getImage(imageName: recipe.imageName) ?? #imageLiteral(resourceName: "default")
             ImageController.updateImage(imageName: recipe.imageName, newImage: recipeIv.image ?? initialImage)
             CoreDataController.updateRecipeData(delegate: delegate, recipe: recipe)
@@ -201,7 +206,7 @@ class WriteRecipeViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
         // if the segue is the save recipe segue, save the recipe
-        if (segue.identifier == "SaveToRecipeList") {
+        if (segue.identifier == "SaveToRecipeList" && recipeNameTf.text! != "") {
             saveRecipe()
         }
     }
@@ -252,7 +257,6 @@ extension WriteRecipeViewController: UITableViewDelegate, UITableViewDataSource 
         if (tableView == ingredientsTv) { return ingredients.count }
         else if (tableView == methodsTv) { return methods.count }
         
-        print("No Table Found")
         return 0
     }
     
@@ -269,6 +273,7 @@ extension WriteRecipeViewController: UITableViewDelegate, UITableViewDataSource 
             // set number of lines to 0 so that rows have dynamic height based off contnet
             cell.textLabel?.numberOfLines = 0
             cell.textLabel?.text = ingredient
+            cell.textLabel?.font = UIFont(name: "Comfortaa-Regular", size: 14)
             
             // return the cell
             return cell
@@ -281,13 +286,13 @@ extension WriteRecipeViewController: UITableViewDelegate, UITableViewDataSource 
             let cell = methodsTv.dequeueReusableCell(withIdentifier: "MethodCell", for: indexPath)
             cell.textLabel?.numberOfLines = 0
             cell.textLabel?.text = "\(indexPath.row + 1). \(method)"
+            cell.textLabel?.font = UIFont(name: "Comfortaa-Regular", size: 14)
             
             // return the cell
             return cell
         }
         
         // if no table is found return an empty cell
-        print("No Table Found")
         return UITableViewCell()
     }
     
@@ -340,6 +345,7 @@ extension WriteRecipeViewController: UIImagePickerControllerDelegate, UINavigati
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         if let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
             recipeIv.image = image
+            recipeIv.backgroundColor = .clear
         }
         dismiss(animated: true, completion: nil)
     }

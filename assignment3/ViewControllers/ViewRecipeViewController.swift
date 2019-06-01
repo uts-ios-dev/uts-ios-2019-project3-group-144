@@ -111,6 +111,7 @@ extension ViewRecipeViewController: UITableViewDelegate, UITableViewDataSource {
             let cell = ingredientsTv.dequeueReusableCell(withIdentifier: "IngredientCell", for: indexPath)
             cell.textLabel?.numberOfLines = 0
             cell.textLabel?.text = ingredient
+            cell.textLabel?.font = UIFont(name: "Comfortaa-Regular", size: 14)
             cell.selectionStyle = .none
             return cell
         }
@@ -119,6 +120,7 @@ extension ViewRecipeViewController: UITableViewDelegate, UITableViewDataSource {
             let cell = methodsTv.dequeueReusableCell(withIdentifier: "MethodCell", for: indexPath)
             cell.textLabel?.numberOfLines = 0
             cell.textLabel?.text = "\(indexPath.row + 1). \(method)"
+            cell.textLabel?.font = UIFont(name: "Comfortaa-Regular", size: 14)
             cell.selectionStyle = .none
             return cell
         }
