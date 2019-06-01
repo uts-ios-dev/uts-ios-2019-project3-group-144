@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		321B75C8229E906B00AD4CC8 /* ImageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 321B75C7229E906B00AD4CC8 /* ImageController.swift */; };
 		32433E792296892800FA3EC8 /* CoreDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32433E782296892800FA3EC8 /* CoreDataController.swift */; };
+		3255119D22A25E74007E1088 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3255119C22A25E74007E1088 /* SettingsViewController.swift */; };
 		329472AE22900AF900A40885 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 329472AD22900AF900A40885 /* AppDelegate.swift */; };
 		329472B322900AF900A40885 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 329472B122900AF900A40885 /* Main.storyboard */; };
 		329472B622900AF900A40885 /* assignment3.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 329472B422900AF900A40885 /* assignment3.xcdatamodeld */; };
@@ -23,6 +24,7 @@
 /* Begin PBXFileReference section */
 		321B75C7229E906B00AD4CC8 /* ImageController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageController.swift; sourceTree = "<group>"; };
 		32433E782296892800FA3EC8 /* CoreDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataController.swift; sourceTree = "<group>"; };
+		3255119C22A25E74007E1088 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SettingsViewController.swift; path = ViewControllers/SettingsViewController.swift; sourceTree = "<group>"; };
 		329472AA22900AF900A40885 /* assignment3.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = assignment3.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		329472AD22900AF900A40885 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		329472B222900AF900A40885 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -78,6 +80,7 @@
 				32ED7B6D2290F2B900AD5550 /* Recipe.swift */,
 				32433E782296892800FA3EC8 /* CoreDataController.swift */,
 				321B75C7229E906B00AD4CC8 /* ImageController.swift */,
+				3255119C22A25E74007E1088 /* SettingsViewController.swift */,
 			);
 			path = assignment3;
 			sourceTree = "<group>";
@@ -161,6 +164,7 @@
 				329472B622900AF900A40885 /* assignment3.xcdatamodeld in Sources */,
 				32ED7B6C2290EAC200AD5550 /* ViewRecipeViewController.swift in Sources */,
 				321B75C8229E906B00AD4CC8 /* ImageController.swift in Sources */,
+				3255119D22A25E74007E1088 /* SettingsViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

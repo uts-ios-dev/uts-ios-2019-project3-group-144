@@ -25,6 +25,7 @@ class RecipeListViewController: UIViewController {
     // function called when view is loaded
     override func viewDidLoad() {
         super.viewDidLoad()
+        recipeTblView.tableFooterView = UIView(frame: CGRect.zero)
         addGesture()
         getRecipes()
         originalRecipes = recipes
