@@ -3,13 +3,13 @@ import Foundation
 // recipe object
 class Recipe {
     
-    var id: Int
-    var name: String
-    var imageName: String
-    var prepTime: Int
-    var cookingTime: Int
-    var ingredients: [String]
-    var methods: [String]
+    var id: Int // the recipe's id number
+    var name: String // the recipe's name
+    var imageName: String // the name of the recipe's image
+    var prepTime: Int // the time needed for preparation
+    var cookingTime: Int // the time needed for cooking
+    var ingredients: [String] // the list of ingredients in the recipe
+    var methods: [String] // the list of methods in the recipe
     
     // initialiser
     init(id: Int, name: String, imageName: String, prepTime: Int, cookingTime: Int, ingredients: [String], methods: [String]) {

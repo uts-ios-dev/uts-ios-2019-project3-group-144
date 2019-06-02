@@ -11,7 +11,7 @@ import UIKit
 
 protocol ThemeProtocol {
     var mainFontName: String { get }
-    var font: UIColor {get}
+    var fontColour: UIColor {get}
     var background: UIColor { get }
     var placeHolder: UIColor { get }
     var accent: UIColor { get }

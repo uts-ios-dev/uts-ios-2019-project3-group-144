@@ -71,11 +71,15 @@ class WriteRecipeViewController: UIViewController {
         ingredientsTv.tableFooterView = UIView(frame: CGRect.zero)
         methodsTv.tableFooterView = UIView(frame: CGRect.zero)
    
+        // create picker object
         createMeasurementPicker()
+        
+        // apply the theme
         applyTheme()
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        // show the navigation bar and hide the tab bar
         self.navigationController?.setNavigationBarHidden(false, animated: true)
         self.tabBarController?.tabBar.isHidden = true
     }
@@ -92,19 +96,17 @@ class WriteRecipeViewController: UIViewController {
         methodsTv.reloadData()
     }
     
+    // function to create the measurement picker
     func createMeasurementPicker(){
+        // create the picker
         let measurementPicker = UIPickerView()
         measurementPicker.delegate = self
         measurementType.inputView = measurementPicker
     }
     
-    @IBAction func onAddIngredientBtnPressed(_ sender: Any) {
-        addIngredient()
-    }
-    
-    @IBAction func onAddMethodBtnPressed(_ sender: Any) {
-        addMethod()
-    }
+    // functions to handle add ingredient/method button presses
+    @IBAction func onAddIngredientBtnPressed(_ sender: Any) { addIngredient() }
+    @IBAction func onAddMethodBtnPressed(_ sender: Any) { addMethod() }
     
     @IBAction func addImage(_ sender: UIButton) {
         if (sender == addFromCameraBtn) {
@@ -183,6 +185,7 @@ class WriteRecipeViewController: UIViewController {
         recipe.ingredients = ingredients
         recipe.methods = methods
         
+        // create or update existing recipe based on if an entry with the given id already exists
         if (!CoreDataController.hasRecipe(delegate: delegate, recipe: recipe)) {
             recipe.imageName = ImageController.saveImage(image: recipeIv.image ?? #imageLiteral(resourceName: "default"), recipe: recipe) ?? ""
             CoreDataController.saveRecipeData(delegate: delegate, recipe: recipe)
@@ -195,7 +198,6 @@ class WriteRecipeViewController: UIViewController {
     
     // function that is called before segue
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        
         // if the segue is the save recipe segue, save the recipe
         if (segue.identifier == "SaveToRecipeList" && recipeNameTf.text! != "") {
             saveRecipe()
@@ -236,71 +238,68 @@ extension WriteRecipeViewController: UITextFieldDelegate {
         return length <= charLimit && allowedCharacters.isSuperset(of: typedCharacters)
     }
     
+    // function to apply current theme to ui elements
     func applyTheme() {
-        
+        // set view background
         view.backgroundColor = Theme.current.background
-        prepTimeLbl.textColor = Theme.current.font
-        cookingTimeLbl.textColor = Theme.current.font
-        ingredientsLbl.textColor = Theme.current.font
-        methodsLbl.textColor = Theme.current.font
         
+        // set static label colours
+        prepTimeLbl.textColor = Theme.current.fontColour
+        cookingTimeLbl.textColor = Theme.current.fontColour
+        ingredientsLbl.textColor = Theme.current.fontColour
+        methodsLbl.textColor = Theme.current.fontColour
+        
+        // set textfield colours
         recipeNameTf.backgroundColor = Theme.current.accent
-        recipeNameTf.textColor = Theme.current.font
-        
+        recipeNameTf.textColor = Theme.current.fontColour
         recipeNameTf.attributedPlaceholder =
             NSAttributedString(string: "recipe name", attributes: [NSAttributedString.Key.foregroundColor: Theme.current.placeHolder])
         
         prepTimeTf.backgroundColor = Theme.current.accent
-        prepTimeTf.textColor = Theme.current.font
-        
+        prepTimeTf.textColor = Theme.current.fontColour
         prepTimeTf.attributedPlaceholder =
             NSAttributedString(string: "minutes", attributes: [NSAttributedString.Key.foregroundColor: Theme.current.placeHolder])
         
         cookingTimeTf.backgroundColor = Theme.current.accent
-        cookingTimeTf.textColor = Theme.current.font
-        
+        cookingTimeTf.textColor = Theme.current.fontColour
         cookingTimeTf.attributedPlaceholder =
             NSAttributedString(string: "minutes", attributes: [NSAttributedString.Key.foregroundColor: Theme.current.placeHolder])
         
         ingredientQtyTf.backgroundColor = Theme.current.accent
-        ingredientQtyTf.textColor = Theme.current.font
-        
+        ingredientQtyTf.textColor = Theme.current.fontColour
         ingredientQtyTf.attributedPlaceholder =
             NSAttributedString(string: "qty.", attributes: [NSAttributedString.Key.foregroundColor: Theme.current.placeHolder])
 
         ingredientNameTf.backgroundColor = Theme.current.accent
-        ingredientNameTf.textColor = Theme.current.font
-        
+        ingredientNameTf.textColor = Theme.current.fontColour
         ingredientNameTf.attributedPlaceholder =
             NSAttributedString(string: "ingredient", attributes: [NSAttributedString.Key.foregroundColor: Theme.current.placeHolder])
         
         measurementType.backgroundColor = Theme.current.accent
-        measurementType.textColor = Theme.current.font
-        
+        measurementType.textColor = Theme.current.fontColour
         measurementType.attributedPlaceholder =
             NSAttributedString(string: "unit", attributes: [NSAttributedString.Key.foregroundColor: Theme.current.placeHolder])
         
         methodTf.backgroundColor = Theme.current.accent
-        methodTf.textColor = Theme.current.font
-        
+        methodTf.textColor = Theme.current.fontColour
         methodTf.attributedPlaceholder =
             NSAttributedString(string: "minutes", attributes: [NSAttributedString.Key.foregroundColor: Theme.current.placeHolder])
         
+        // set camera button and imageview colours
         addFromCameraBtn.backgroundColor = Theme.current.accent
         recipeIv.backgroundColor = Theme.current.accent
         
+        // reload tableview data
         methodsTv.reloadData()
         ingredientsTv.reloadData()
     }
 }
-
 
 // tableview related functions
 extension WriteRecipeViewController: UITableViewDelegate, UITableViewDataSource {
     
     // function to get number of rows needed for tableview
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
         // return count of ingredients or methods list depending on the tableview being checked
         if (tableView == ingredientsTv) { return ingredients.count }
         else if (tableView == methodsTv) { return methods.count }
@@ -310,7 +309,6 @@ extension WriteRecipeViewController: UITableViewDelegate, UITableViewDataSource 
     
     // function to populate tableview cells with data
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
         // add data to ingredients or methods tableview
         if (tableView == ingredientsTv) {
             // get ingredient data
@@ -322,7 +320,7 @@ extension WriteRecipeViewController: UITableViewDelegate, UITableViewDataSource 
             cell.textLabel?.numberOfLines = 0
             cell.textLabel?.text = ingredient
             cell.textLabel?.font = UIFont(name: Theme.current.mainFontName, size: 14)
-            cell.textLabel?.textColor = Theme.current.font
+            cell.textLabel?.textColor = Theme.current.fontColour
             cell.backgroundColor = .clear
             cell.separatorInset = .zero
             // return the cell
@@ -337,7 +335,7 @@ extension WriteRecipeViewController: UITableViewDelegate, UITableViewDataSource 
             cell.textLabel?.numberOfLines = 0
             cell.textLabel?.text = "\(indexPath.row + 1). \(method)"
             cell.textLabel?.font = UIFont(name: Theme.current.mainFontName, size: 14)
-            cell.textLabel?.textColor = Theme.current.font
+            cell.textLabel?.textColor = Theme.current.fontColour
             cell.backgroundColor = .clear
             cell.separatorInset = .zero
             // return the cell
@@ -350,7 +348,6 @@ extension WriteRecipeViewController: UITableViewDelegate, UITableViewDataSource 
     
     // function that will allow the methods to be reordered by hold and drag
     func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
-        
         if (tableView == ingredientsTv) {
             // get the moved object
             let movedObject = self.ingredients[sourceIndexPath.row]
@@ -374,16 +371,20 @@ extension WriteRecipeViewController: UITableViewDelegate, UITableViewDataSource 
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if (editingStyle == .delete) {
             if (tableView == ingredientsTv) {
+                // remove the ingredient from the list
                 ingredients.remove(at: indexPath.row)
-                
+
+                // remove ingredient entry from the tableview
                 ingredientsTv.beginUpdates()
                 ingredientsTv.deleteRows(at: [indexPath], with: .automatic)
                 ingredientsTv.endUpdates()
                 ingredientsTv.reloadData()
             }
             else if (tableView == methodsTv) {
+                // remove the ingredient from the list
                 methods.remove(at: indexPath.row)
                 
+                // remove method entry from the tableview
                 methodsTv.beginUpdates()
                 methodsTv.deleteRows(at: [indexPath], with: .automatic)
                 methodsTv.endUpdates()
@@ -393,8 +394,13 @@ extension WriteRecipeViewController: UITableViewDelegate, UITableViewDataSource 
     }
 }
 
+// imagepicker functions
 extension WriteRecipeViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    
+    // function to retrieve and set image from the picker
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        
+        // if there is an image, set it to the imageview
         if let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
             recipeIv.image = image
             recipeIv.backgroundColor = .clear
@@ -403,25 +409,21 @@ extension WriteRecipeViewController: UIImagePickerControllerDelegate, UINavigati
     }
 }
 
+// picker functions
 extension WriteRecipeViewController: UIPickerViewDataSource, UIPickerViewDelegate{
 
-    func numberOfComponents(in pickerView: UIPickerView) -> Int {
-        return 1
-    }
+    // function to return number of components in picker
+    func numberOfComponents(in pickerView: UIPickerView) -> Int { return 1 }
 
-    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return measurement.count
-    }
+    // function to return the number of pickeroptions
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int { return measurement.count }
 
-    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return measurement[row]
-    }
+    // function to return the selected options
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? { return measurement[row] }
 
-
+    // function to handle picker option selections
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         selectedMeasurement = measurement[row]
         measurementType.text = selectedMeasurement
-
     }
-
 }
