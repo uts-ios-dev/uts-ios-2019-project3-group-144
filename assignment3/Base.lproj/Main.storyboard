@@ -18,7 +18,7 @@
         </array>
     </customFonts>
     <scenes>
-        <!--about-->
+        <!--settings-->
         <scene sceneID="rjr-4l-aYc">
             <objects>
                 <viewController id="5Gt-Qg-TLH" customClass="SettingsViewController" customModule="assignment3" customModuleProvider="target" sceneMemberID="viewController">
@@ -118,7 +118,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="syS-Bc-8rn"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="about" image="info" id="Cu0-an-1Uc"/>
+                    <tabBarItem key="tabBarItem" title="settings" image="settings" id="Cu0-an-1Uc"/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="clearDataBtn" destination="Wfw-VO-Rxi" id="yXM-Jb-NlM"/>
@@ -872,8 +872,8 @@
     <resources>
         <image name="camera" width="30" height="30"/>
         <image name="default" width="400" height="225"/>
-        <image name="info" width="30" height="30"/>
         <image name="list" width="30" height="30"/>
+        <image name="settings" width="30" height="30"/>
         <image name="title_icon" width="250" height="250"/>
         <namedColor name="Tint">
             <color red="1" green="0.15000000596046448" blue="0.38999998569488525" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
