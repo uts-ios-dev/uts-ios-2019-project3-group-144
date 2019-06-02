@@ -12,6 +12,7 @@ import UIKit
 class RecipeListViewController: UIViewController {
 
     // outlets
+    
     @IBOutlet weak var recipeSearchBr: UISearchBar!
     @IBOutlet weak var recipeTblView: UITableView!
     @IBOutlet weak var btnMenu: UIBarButtonItem!
@@ -36,6 +37,12 @@ class RecipeListViewController: UIViewController {
         getRecipes()
         if (recipes.count < 1) { btnMenu.isEnabled = false }
         recipeSearchBr.delegate = self
+        applyTheme()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        self.tabBarController?.tabBar.isHidden = false
+        recipeTblView.reloadData()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -49,8 +56,14 @@ class RecipeListViewController: UIViewController {
             recipeTblView.reloadData()
         }
         
-        self.tabBarController?.tabBar.isHidden = false
         if (recipes.count < 1) { btnMenu.isEnabled = false }
+        applyTheme()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        recipeSearchBr.text = ""
+        isSearching = false
+        view.endEditing(true)
     }
     
     // function called before sefue
@@ -133,6 +146,20 @@ class RecipeListViewController: UIViewController {
         
         present(actionSheet, animated: true, completion: nil)
     }
+    
+    func applyTheme() {
+        view.backgroundColor = Theme.current.background
+        recipeSearchBr.backgroundImage = UIImage()
+        recipeSearchBr.backgroundColor = Theme.current.background
+        let searchField: UITextField = recipeSearchBr.value(forKeyPath: "_searchField") as! UITextField;
+        searchField.backgroundColor = Theme.current.accent
+        searchField.textColor = Theme.current.font
+        searchField.font = UIFont(name: Theme.current.mainFontName, size: 16)
+        searchField.attributedPlaceholder =
+            NSAttributedString(string: "enter keyword", attributes: [NSAttributedString.Key.foregroundColor: Theme.current.placeHolder])
+        
+        recipeTblView.reloadData()
+    }
 }
 
 // tableview functions
@@ -147,12 +174,8 @@ extension RecipeListViewController: UITableViewDelegate, UITableViewDataSource {
             placeholderLbl.isHidden = false
             btnMenu.isEnabled = false
         }
-        if (isSearching) {
-            return searchRecipes.count
-        }
-        else {
-            return recipes.count
-        }
+        if (isSearching) { return searchRecipes.count }
+        else { return recipes.count }
     }
     
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -165,7 +188,10 @@ extension RecipeListViewController: UITableViewDelegate, UITableViewDataSource {
             let recipe = recipes[indexPath.row]
             cell.textLabel?.text = recipe.name
         }
-        cell.textLabel?.font = UIFont(name: "Comfortaa-Regular", size: 14)
+        cell.textLabel?.font = UIFont(name: Theme.current.mainFontName, size: 16)
+        cell.textLabel?.textColor = Theme.current.font
+        cell.backgroundColor = .clear
+        cell.separatorInset = .zero
         return cell
     }
     
@@ -206,21 +232,11 @@ extension RecipeListViewController: UITableViewDelegate, UITableViewDataSource {
 // search functions
 extension RecipeListViewController: UISearchBarDelegate {
     
-    func searchBarTextDidBeginEditing(_ recipeSearchBr: UISearchBar) {
-        isSearching = true
-    }
+    func searchBarTextDidBeginEditing(_ recipeSearchBr: UISearchBar) { isSearching = true }
+    func searchBarTextDidEndEditing(_ recipeSearchBr: UISearchBar) { isSearching = false }
     
-    func searchBarTextDidEndEditing(_ recipeSearchBr: UISearchBar) {
-        isSearching = false
-    }
-    
-    func searchBarCancelButtonClicked(_ recipeSearchBr: UISearchBar) {
-        isSearching = false
-    }
-    
-    func searchBarSearchButtonClicked(_ recipeSearchBr: UISearchBar) {
-        isSearching = false
-    }
+    func searchBarCancelButtonClicked(_ recipeSearchBr: UISearchBar) { isSearching = false }
+    func searchBarSearchButtonClicked(_ recipeSearchBr: UISearchBar) { isSearching = false }
     
     func searchBar(_ recipeSearchBr: UISearchBar, textDidChange searchtext: String) {
         searchRecipes.removeAll(keepingCapacity: false)

@@ -18,6 +18,11 @@
 		329472BB22900AF900A40885 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 329472B922900AF900A40885 /* LaunchScreen.storyboard */; };
 		329472C322900C7600A40885 /* RecipeListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 329472C222900C7600A40885 /* RecipeListViewController.swift */; };
 		329472C52290119A00A40885 /* WriteRecipeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 329472C42290119A00A40885 /* WriteRecipeViewController.swift */; };
+		329482D022A3802600BC589E /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 329482CF22A3802600BC589E /* Theme.swift */; };
+		329482D222A380CA00BC589E /* Colours.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 329482D122A380CA00BC589E /* Colours.xcassets */; };
+		329482D422A382E500BC589E /* ThemeProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 329482D322A382E500BC589E /* ThemeProtocol.swift */; };
+		329482D622A3839100BC589E /* LightTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 329482D522A3839100BC589E /* LightTheme.swift */; };
+		329482D822A3864A00BC589E /* DarkTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 329482D722A3864A00BC589E /* DarkTheme.swift */; };
 		32ED7B6C2290EAC200AD5550 /* ViewRecipeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32ED7B6B2290EAC200AD5550 /* ViewRecipeViewController.swift */; };
 		32ED7B6E2290F2B900AD5550 /* Recipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32ED7B6D2290F2B900AD5550 /* Recipe.swift */; };
 /* End PBXBuildFile section */
@@ -36,6 +41,11 @@
 		329472BC22900AF900A40885 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		329472C222900C7600A40885 /* RecipeListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = RecipeListViewController.swift; path = assignment3/ViewControllers/RecipeListViewController.swift; sourceTree = SOURCE_ROOT; };
 		329472C42290119A00A40885 /* WriteRecipeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = WriteRecipeViewController.swift; path = assignment3/ViewControllers/WriteRecipeViewController.swift; sourceTree = SOURCE_ROOT; };
+		329482CF22A3802600BC589E /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		329482D122A380CA00BC589E /* Colours.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colours.xcassets; sourceTree = "<group>"; };
+		329482D322A382E500BC589E /* ThemeProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeProtocol.swift; sourceTree = "<group>"; };
+		329482D522A3839100BC589E /* LightTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightTheme.swift; sourceTree = "<group>"; };
+		329482D722A3864A00BC589E /* DarkTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DarkTheme.swift; sourceTree = "<group>"; };
 		32ED7B6B2290EAC200AD5550 /* ViewRecipeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ViewRecipeViewController.swift; path = assignment3/ViewControllers/ViewRecipeViewController.swift; sourceTree = SOURCE_ROOT; };
 		32ED7B6D2290F2B900AD5550 /* Recipe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Recipe.swift; path = assignment3/Models/Recipe.swift; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
@@ -78,6 +88,7 @@
 		329472AC22900AF900A40885 /* assignment3 */ = {
 			isa = PBXGroup;
 			children = (
+				329482CE22A37F8000BC589E /* Theme */,
 				328395A822A2D2A9009BB4F2 /* Fonts */,
 				329472AD22900AF900A40885 /* AppDelegate.swift */,
 				329472B122900AF900A40885 /* Main.storyboard */,
@@ -94,6 +105,18 @@
 				3255119C22A25E74007E1088 /* SettingsViewController.swift */,
 			);
 			path = assignment3;
+			sourceTree = "<group>";
+		};
+		329482CE22A37F8000BC589E /* Theme */ = {
+			isa = PBXGroup;
+			children = (
+				329482CF22A3802600BC589E /* Theme.swift */,
+				329482D122A380CA00BC589E /* Colours.xcassets */,
+				329482D322A382E500BC589E /* ThemeProtocol.swift */,
+				329482D522A3839100BC589E /* LightTheme.swift */,
+				329482D722A3864A00BC589E /* DarkTheme.swift */,
+			);
+			path = Theme;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -155,6 +178,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				329472BB22900AF900A40885 /* LaunchScreen.storyboard in Resources */,
+				329482D222A380CA00BC589E /* Colours.xcassets in Resources */,
 				328395AA22A2D317009BB4F2 /* Comfortaa[wght].ttf in Resources */,
 				329472B822900AF900A40885 /* Assets.xcassets in Resources */,
 				329472B322900AF900A40885 /* Main.storyboard in Resources */,
@@ -172,10 +196,14 @@
 				329472C322900C7600A40885 /* RecipeListViewController.swift in Sources */,
 				329472AE22900AF900A40885 /* AppDelegate.swift in Sources */,
 				32433E792296892800FA3EC8 /* CoreDataController.swift in Sources */,
+				329482D422A382E500BC589E /* ThemeProtocol.swift in Sources */,
+				329482D822A3864A00BC589E /* DarkTheme.swift in Sources */,
 				32ED7B6E2290F2B900AD5550 /* Recipe.swift in Sources */,
 				329472B622900AF900A40885 /* assignment3.xcdatamodeld in Sources */,
 				32ED7B6C2290EAC200AD5550 /* ViewRecipeViewController.swift in Sources */,
+				329482D022A3802600BC589E /* Theme.swift in Sources */,
 				321B75C8229E906B00AD4CC8 /* ImageController.swift in Sources */,
+				329482D622A3839100BC589E /* LightTheme.swift in Sources */,
 				3255119D22A25E74007E1088 /* SettingsViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

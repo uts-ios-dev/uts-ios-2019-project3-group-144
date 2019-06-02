@@ -10,12 +10,31 @@ import UIKit
 
 class SettingsViewController: UIViewController {
 
+    @IBOutlet weak var titleLbl: UILabel!
+    @IBOutlet weak var versionLbl: UILabel!
+    @IBOutlet weak var themeTitleLbl: UILabel!
+    
     @IBOutlet weak var clearDataBtn: UIButton!
+    @IBOutlet weak var themeSegCtrl: UISegmentedControl!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        applyTheme()
         // Do any additional setup after loading the view.
+    }
+    
+    @IBAction func onThemeIndexChanged(_ sender: Any) {
+        switch themeSegCtrl.selectedSegmentIndex
+        {
+        case 0:
+            Theme.current = LightTheme()
+            applyTheme()
+        case 1:
+            Theme.current = DarkTheme()
+            applyTheme()
+        default:
+            break
+        }
     }
     
     @IBAction func onPressClearDataBtn(_ sender: Any) {
@@ -35,5 +54,12 @@ class SettingsViewController: UIViewController {
         actionSheet.addAction(cancel)
         
         present(actionSheet, animated: true, completion: nil)
+    }
+    
+    func applyTheme() {
+        view.backgroundColor = Theme.current.background
+        titleLbl.textColor = Theme.current.font
+        versionLbl.textColor = Theme.current.font
+        themeTitleLbl.textColor = Theme.current.font
     }
 }

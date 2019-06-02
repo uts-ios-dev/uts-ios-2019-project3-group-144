@@ -4,9 +4,13 @@ import UIKit
 class ViewRecipeViewController: UIViewController {
     
     // label outlets
+    @IBOutlet weak var prepTimeTitleLbl: UILabel!
+    @IBOutlet weak var cookingTimeTitleLbl: UILabel!
     @IBOutlet weak var recipeNameLbl: UILabel!
     @IBOutlet weak var prepTimeLbl: UILabel!
     @IBOutlet weak var cookingTimeLbl: UILabel!
+    @IBOutlet weak var ingredientsLbl: UILabel!
+    @IBOutlet weak var methodsLbl: UILabel!
     
     @IBOutlet weak var recipeIv: UIImageView!
     
@@ -34,45 +38,48 @@ class ViewRecipeViewController: UIViewController {
         let prepTime = minutesToHours(minutes: recipe.prepTime)
         
         if (prepTime.hours == 0) {
-            if (prepTime.minutes != 1) { prepTimeLbl.text = "\(prepTime.minutes) minutes" }
-            else { prepTimeLbl.text = "\(prepTime.minutes) minute" }
+            if (prepTime.minutes != 1) { prepTimeLbl.text = "\(prepTime.minutes) mins" }
+            else { prepTimeLbl.text = "\(prepTime.minutes) min" }
         }
         else if (prepTime.minutes == 0) {
-            if (prepTime.hours != 1) { prepTimeLbl.text = "\(prepTime.hours) hours" }
-            else { prepTimeLbl.text = "\(prepTime.hours) hour" }
+            if (prepTime.hours != 1) { prepTimeLbl.text = "\(prepTime.hours) hrs" }
+            else { prepTimeLbl.text = "\(prepTime.hours) hr" }
         }
         else {
-            if (prepTime.hours != 1 ) { prepTimeLbl.text = "\(prepTime.hours) hours, "}
-            else { prepTimeLbl.text = "\(prepTime.hours) hour, "}
+            if (prepTime.hours != 1 ) { prepTimeLbl.text = "\(prepTime.hours) hrs, "}
+            else { prepTimeLbl.text = "\(prepTime.hours) hr, "}
             
-            if (prepTime.minutes != 1) { prepTimeLbl.text! += "\(prepTime.minutes) minutes" }
-            else { prepTimeLbl.text! += "\(prepTime.minutes) minute" }
+            if (prepTime.minutes != 1) { prepTimeLbl.text! += "\(prepTime.minutes) mins" }
+            else { prepTimeLbl.text! += "\(prepTime.minutes) min" }
         }
         
         let cookingTime = minutesToHours(minutes: recipe.cookingTime)
 
         print(cookingTime)
         if (cookingTime.hours == 0) {
-            if (cookingTime.minutes != 1) { cookingTimeLbl.text = "\(cookingTime.minutes) minutes" }
-            else { cookingTimeLbl.text = "\(cookingTime.minutes) minute" }
+            if (cookingTime.minutes != 1) { cookingTimeLbl.text = "\(cookingTime.minutes) mins" }
+            else { cookingTimeLbl.text = "\(cookingTime.minutes) min" }
         }
         else if (cookingTime.minutes == 0) {
-            if (cookingTime.hours != 1) { cookingTimeLbl.text = "\(cookingTime.hours) hours" }
-            else { cookingTimeLbl.text = "\(String(cookingTime.hours)) hour" }
+            if (cookingTime.hours != 1) { cookingTimeLbl.text = "\(cookingTime.hours) hrs" }
+            else { cookingTimeLbl.text = "\(String(cookingTime.hours)) hr" }
         }
         else {
-            if (cookingTime.hours != 1 ) { cookingTimeLbl.text = "\(cookingTime.hours) hours, "}
-            else { cookingTimeLbl.text = "\(cookingTime.hours) hour, "}
+            if (cookingTime.hours != 1 ) { cookingTimeLbl.text = "\(cookingTime.hours) hrs, "}
+            else { cookingTimeLbl.text = "\(cookingTime.hours) hr, "}
             
-            if (cookingTime.minutes != 1) { cookingTimeLbl.text! += "\(cookingTime.minutes) minutes" }
-            else { cookingTimeLbl.text! += "\(cookingTime.minutes) minute" }
+            if (cookingTime.minutes != 1) { cookingTimeLbl.text! += "\(cookingTime.minutes) mins" }
+            else { cookingTimeLbl.text! += "\(cookingTime.minutes) min" }
         }
     
         ingredients = recipe.ingredients
         methods = recipe.methods
         
-        ingredientsTv.separatorStyle = .none
-        methodsTv.separatorStyle = .none
+        applyTheme()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        self.tabBarController?.tabBar.isHidden = true
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -85,6 +92,19 @@ class ViewRecipeViewController: UIViewController {
     
     func minutesToHours(minutes: Int) -> (hours: Int, minutes: Int) {
         return (hours: minutes / 60, minutes: minutes % 60)
+    }
+    
+    func applyTheme() {
+        view.backgroundColor = Theme.current.background
+        recipeNameLbl.textColor = Theme.current.font
+        prepTimeTitleLbl.textColor = Theme.current.font
+        cookingTimeTitleLbl.textColor = Theme.current.font
+        prepTimeLbl.textColor = Theme.current.font
+        prepTimeLbl.backgroundColor = Theme.current.accent
+        cookingTimeLbl.textColor = Theme.current.font
+        cookingTimeLbl.backgroundColor = Theme.current.accent
+        ingredientsLbl.textColor = Theme.current.font
+        methodsLbl.textColor = Theme.current.font
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -111,8 +131,11 @@ extension ViewRecipeViewController: UITableViewDelegate, UITableViewDataSource {
             let cell = ingredientsTv.dequeueReusableCell(withIdentifier: "IngredientCell", for: indexPath)
             cell.textLabel?.numberOfLines = 0
             cell.textLabel?.text = ingredient
-            cell.textLabel?.font = UIFont(name: "Comfortaa-Regular", size: 14)
+            cell.textLabel?.font = UIFont(name: Theme.current.mainFontName, size: 14)
+            cell.textLabel?.textColor = Theme.current.font
             cell.selectionStyle = .none
+            cell.backgroundColor = .clear
+            cell.separatorInset = .zero
             return cell
         }
         else if (tableView == methodsTv) {
@@ -120,8 +143,11 @@ extension ViewRecipeViewController: UITableViewDelegate, UITableViewDataSource {
             let cell = methodsTv.dequeueReusableCell(withIdentifier: "MethodCell", for: indexPath)
             cell.textLabel?.numberOfLines = 0
             cell.textLabel?.text = "\(indexPath.row + 1). \(method)"
-            cell.textLabel?.font = UIFont(name: "Comfortaa-Regular", size: 14)
+            cell.textLabel?.font = UIFont(name: Theme.current.mainFontName, size: 14)
+            cell.textLabel?.textColor = Theme.current.font
             cell.selectionStyle = .none
+            cell.backgroundColor = .clear
+            cell.separatorInset = .zero
             return cell
         }
         

@@ -3,6 +3,12 @@ import UIKit
 // view controller to write new recipe or edit existing recipe
 class WriteRecipeViewController: UIViewController {
     
+    // label outlets
+    @IBOutlet weak var prepTimeLbl: UILabel!
+    @IBOutlet weak var cookingTimeLbl: UILabel!
+    @IBOutlet weak var ingredientsLbl: UILabel!
+    @IBOutlet weak var methodsLbl: UILabel!
+    
     // button outlets
     @IBOutlet weak var saveBtn: UIBarButtonItem!
     @IBOutlet weak var addIngredientBtn: UIButton!
@@ -66,10 +72,12 @@ class WriteRecipeViewController: UIViewController {
         methodsTv.tableFooterView = UIView(frame: CGRect.zero)
    
         createMeasurementPicker()
+        applyTheme()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         self.navigationController?.setNavigationBarHidden(false, animated: true)
+        self.tabBarController?.tabBar.isHidden = true
     }
     
     override func viewDidLayoutSubviews() {
@@ -90,7 +98,6 @@ class WriteRecipeViewController: UIViewController {
         measurementType.inputView = measurementPicker
     }
     
-
     @IBAction func onAddIngredientBtnPressed(_ sender: Any) {
         addIngredient()
     }
@@ -228,6 +235,63 @@ extension WriteRecipeViewController: UITextFieldDelegate {
         // return bool for if text is within limit and is using valid characters
         return length <= charLimit && allowedCharacters.isSuperset(of: typedCharacters)
     }
+    
+    func applyTheme() {
+        
+        view.backgroundColor = Theme.current.background
+        prepTimeLbl.textColor = Theme.current.font
+        cookingTimeLbl.textColor = Theme.current.font
+        ingredientsLbl.textColor = Theme.current.font
+        methodsLbl.textColor = Theme.current.font
+        
+        recipeNameTf.backgroundColor = Theme.current.accent
+        recipeNameTf.textColor = Theme.current.font
+        
+        recipeNameTf.attributedPlaceholder =
+            NSAttributedString(string: "recipe name", attributes: [NSAttributedString.Key.foregroundColor: Theme.current.placeHolder])
+        
+        prepTimeTf.backgroundColor = Theme.current.accent
+        prepTimeTf.textColor = Theme.current.font
+        
+        prepTimeTf.attributedPlaceholder =
+            NSAttributedString(string: "minutes", attributes: [NSAttributedString.Key.foregroundColor: Theme.current.placeHolder])
+        
+        cookingTimeTf.backgroundColor = Theme.current.accent
+        cookingTimeTf.textColor = Theme.current.font
+        
+        cookingTimeTf.attributedPlaceholder =
+            NSAttributedString(string: "minutes", attributes: [NSAttributedString.Key.foregroundColor: Theme.current.placeHolder])
+        
+        ingredientQtyTf.backgroundColor = Theme.current.accent
+        ingredientQtyTf.textColor = Theme.current.font
+        
+        ingredientQtyTf.attributedPlaceholder =
+            NSAttributedString(string: "qty.", attributes: [NSAttributedString.Key.foregroundColor: Theme.current.placeHolder])
+
+        ingredientNameTf.backgroundColor = Theme.current.accent
+        ingredientNameTf.textColor = Theme.current.font
+        
+        ingredientNameTf.attributedPlaceholder =
+            NSAttributedString(string: "ingredient", attributes: [NSAttributedString.Key.foregroundColor: Theme.current.placeHolder])
+        
+        measurementType.backgroundColor = Theme.current.accent
+        measurementType.textColor = Theme.current.font
+        
+        measurementType.attributedPlaceholder =
+            NSAttributedString(string: "unit", attributes: [NSAttributedString.Key.foregroundColor: Theme.current.placeHolder])
+        
+        methodTf.backgroundColor = Theme.current.accent
+        methodTf.textColor = Theme.current.font
+        
+        methodTf.attributedPlaceholder =
+            NSAttributedString(string: "minutes", attributes: [NSAttributedString.Key.foregroundColor: Theme.current.placeHolder])
+        
+        addFromCameraBtn.backgroundColor = Theme.current.accent
+        recipeIv.backgroundColor = Theme.current.accent
+        
+        methodsTv.reloadData()
+        ingredientsTv.reloadData()
+    }
 }
 
 
@@ -257,8 +321,10 @@ extension WriteRecipeViewController: UITableViewDelegate, UITableViewDataSource 
             // set number of lines to 0 so that rows have dynamic height based off contnet
             cell.textLabel?.numberOfLines = 0
             cell.textLabel?.text = ingredient
-            cell.textLabel?.font = UIFont(name: "Comfortaa-Regular", size: 14)
-            
+            cell.textLabel?.font = UIFont(name: Theme.current.mainFontName, size: 14)
+            cell.textLabel?.textColor = Theme.current.font
+            cell.backgroundColor = .clear
+            cell.separatorInset = .zero
             // return the cell
             return cell
         }
@@ -270,8 +336,10 @@ extension WriteRecipeViewController: UITableViewDelegate, UITableViewDataSource 
             let cell = methodsTv.dequeueReusableCell(withIdentifier: "MethodCell", for: indexPath)
             cell.textLabel?.numberOfLines = 0
             cell.textLabel?.text = "\(indexPath.row + 1). \(method)"
-            cell.textLabel?.font = UIFont(name: "Comfortaa-Regular", size: 14)
-            
+            cell.textLabel?.font = UIFont(name: Theme.current.mainFontName, size: 14)
+            cell.textLabel?.textColor = Theme.current.font
+            cell.backgroundColor = .clear
+            cell.separatorInset = .zero
             // return the cell
             return cell
         }
