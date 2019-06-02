@@ -40,7 +40,7 @@ class WriteRecipeViewController: UIViewController {
     var imagePickerController = UIImagePickerController()
 
     // pickerView measurements
-    let measurement = ["", "g","mg", "kg", "ml", "l", "cup"]
+    let measurement = ["", "g","mg", "kg", "ml", "l", "cup", "tbsp", "tsp"]
     var selectedMeasurement : String?
 
     

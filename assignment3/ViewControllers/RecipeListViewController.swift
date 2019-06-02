@@ -270,8 +270,17 @@ extension RecipeListViewController: UISearchBarDelegate {
     
     // functions to enable/disable isSearching boolean
     func searchBarTextDidBeginEditing(_ recipeSearchBr: UISearchBar) { isSearching = true }
-    func searchBarTextDidEndEditing(_ recipeSearchBr: UISearchBar) { isSearching = false }
-    func searchBarCancelButtonClicked(_ recipeSearchBr: UISearchBar) { isSearching = false }
+    func searchBarTextDidEndEditing(_ recipeSearchBr: UISearchBar) {
+        isSearching = false
+        recipeTblView.reloadData()
+        view.endEditing(true)
+    }
+    func searchBarCancelButtonClicked(_ recipeSearchBr: UISearchBar)
+    {
+        isSearching = false
+        recipeTblView.reloadData()
+        view.endEditing(true)
+    }
     func searchBarSearchButtonClicked(_ recipeSearchBr: UISearchBar) { isSearching = false }
     
     // function to generate search result
@@ -283,7 +292,7 @@ extension RecipeListViewController: UISearchBarDelegate {
         let predicateString = recipeSearchBr.text!.lowercased()
         searchRecipes = recipes.filter( {$0.name.lowercased().range(of: predicateString) != nil} )
         searchRecipes.sort {$0.name < $1.name}
-        isSearching = (searchRecipes.count == 0) ? false: true
+        isSearching = (predicateString == "") ? false: true
         recipeTblView.reloadData()
     }
 }

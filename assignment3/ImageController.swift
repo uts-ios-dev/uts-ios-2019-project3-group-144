@@ -25,16 +25,10 @@ class ImageController {
                 let filePath = documentsPath.appendingPathComponent(imageName)
                 // write and save image to the file path
                 try imageData.write(to: filePath)
-                print ("image was saved!")
                 return imageName
             }
-            catch {
-                print("image could not be saved")
-                return nil
-            }
-        } else {
-            return nil
-        }
+            catch { return nil }
+        } else { return nil }
     }
     
     // function to update image in existing file path
@@ -43,10 +37,7 @@ class ImageController {
         let filePath = documentsPath.appendingPathComponent(imageName)
         
         // check if the file exists
-        guard fileManager.fileExists(atPath: filePath.path) else {
-            print("Image does not exist at path: \(filePath)")
-            return
-        }
+        guard fileManager.fileExists(atPath: filePath.path) else { return }
         
         // if the new image can be converted into png data, replace the initial image
         if let imageData = newImage.pngData() {
@@ -55,10 +46,7 @@ class ImageController {
                 try fileManager.removeItem(at: filePath)
                 // save the new image
                 try imageData.write(to: filePath)
-                print("\(imageName) was updated")
-            } catch let error as NSError {
-                print("Could not delete \(imageName): \(error)")
-            }
+            } catch let error as NSError { print("Could not delete \(imageName): \(error)") }
         }
     }
     
@@ -69,17 +57,10 @@ class ImageController {
         let filePath = documentsPath.appendingPathComponent(imageName).path
         
         // check if the image exists
-        guard fileManager.fileExists(atPath: filePath) else {
-            print("Image does not exist at path: \(filePath)")
-            return nil
-        }
+        guard fileManager.fileExists(atPath: filePath) else { return nil }
         
         // return the image
-        if let imageData = UIImage(contentsOfFile: filePath) {
-            return imageData
-        } else {
-            print("UIImage could not be created.")
-            return nil
-        }
+        if let imageData = UIImage(contentsOfFile: filePath) { return imageData }
+        else { return nil }
     }
 }
