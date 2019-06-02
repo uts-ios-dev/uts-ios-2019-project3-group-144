@@ -23,6 +23,10 @@ class RecipeListViewController: UIViewController {
     var sortedByTimeMax: [Recipe] = []
     var sortedByTimeMin: [Recipe] = []
     var sortedAlphabetically: [Recipe] = []
+    var searchRecipes: [Recipe] = []
+    
+    // search variable
+    var isSearching: Bool = false
     
     // function called when view is loaded
     override func viewDidLoad() {
@@ -31,6 +35,7 @@ class RecipeListViewController: UIViewController {
         recipeTblView.tableFooterView = UIView(frame: CGRect.zero)
         getRecipes()
         if (recipes.count < 1) { btnMenu.isEnabled = false }
+        recipeSearchBr.delegate = self
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -97,7 +102,6 @@ class RecipeListViewController: UIViewController {
         showActionSheet()
     }
     
-    
     @objc func showActionSheet() {
         let actionSheet = UIAlertController(title: "sort recipes", message: "", preferredStyle: .actionSheet)
         let cancel = UIAlertAction(title: "cancel", style: .cancel, handler: nil)
@@ -143,13 +147,24 @@ extension RecipeListViewController: UITableViewDelegate, UITableViewDataSource {
             placeholderLbl.isHidden = false
             btnMenu.isEnabled = false
         }
-        return recipes.count
+        if (isSearching) {
+            return searchRecipes.count
+        }
+        else {
+            return recipes.count
+        }
     }
     
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let recipe = recipes[indexPath.row]
         let cell = UITableViewCell(style: UITableViewCell.CellStyle.default, reuseIdentifier: "RecipeCell")
-        cell.textLabel?.text = recipe.name
+        if (isSearching) {
+            let recipeSearch = searchRecipes[indexPath.row]
+            cell.textLabel?.text = recipeSearch.name
+        }
+        else {
+            let recipe = recipes[indexPath.row]
+            cell.textLabel?.text = recipe.name
+        }
         cell.textLabel?.font = UIFont(name: "Comfortaa-Regular", size: 14)
         return cell
     }
@@ -185,5 +200,34 @@ extension RecipeListViewController: UITableViewDelegate, UITableViewDataSource {
         })
         
         return [deleteAction]
+    }
+}
+
+// search functions
+extension RecipeListViewController: UISearchBarDelegate {
+    
+    func searchBarTextDidBeginEditing(_ recipeSearchBr: UISearchBar) {
+        isSearching = true
+    }
+    
+    func searchBarTextDidEndEditing(_ recipeSearchBr: UISearchBar) {
+        isSearching = false
+    }
+    
+    func searchBarCancelButtonClicked(_ recipeSearchBr: UISearchBar) {
+        isSearching = false
+    }
+    
+    func searchBarSearchButtonClicked(_ recipeSearchBr: UISearchBar) {
+        isSearching = false
+    }
+    
+    func searchBar(_ recipeSearchBr: UISearchBar, textDidChange searchtext: String) {
+        searchRecipes.removeAll(keepingCapacity: false)
+        let predicateString = recipeSearchBr.text!.lowercased()
+        searchRecipes = recipes.filter( {$0.name.lowercased().range(of: predicateString) != nil} )
+        searchRecipes.sort {$0.name < $1.name}
+        isSearching = (searchRecipes.count == 0) ? false: true
+        recipeTblView.reloadData()
     }
 }
