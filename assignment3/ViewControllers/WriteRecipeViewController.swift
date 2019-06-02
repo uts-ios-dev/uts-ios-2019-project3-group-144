@@ -59,6 +59,9 @@ class WriteRecipeViewController: UIViewController {
         ingredientsTv.isEditing = true
         imagePickerController.delegate = self
         
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboard), name: UIResponder.keyboardWillHideNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboard), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
+        
         // set up initial values for entry fields
         recipeNameTf.text = recipe.name
         recipeIv.image = ImageController.getImage(imageName: recipe.imageName) 
@@ -94,6 +97,19 @@ class WriteRecipeViewController: UIViewController {
         methodsTv.frame = CGRect(x: methodsTv.frame.origin.x, y: methodsTv.frame.origin.y, width: methodsTv.frame.size.width, height: methodsTv.contentSize.height)
         methodsTvHeightConstraint.constant = methodsTv.contentSize.height + 10
         methodsTv.reloadData()
+    }
+    
+    @objc func keyboard(notification: Notification) {
+        let userInfo = notification.userInfo
+        
+        let screenEndFrame = (userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
+        let viewEndFrame = view.convert(screenEndFrame, to: view.window)
+        
+        if (notification.name == UIResponder.keyboardWillHideNotification) { contentsSv.contentInset = UIEdgeInsets.zero }
+        else { contentsSv.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: viewEndFrame.height, right: 0)}
+        
+        contentsSv.scrollIndicatorInsets = contentsSv.contentInset
+        
     }
     
     // function to create the measurement picker
@@ -196,6 +212,62 @@ class WriteRecipeViewController: UIViewController {
         }
     }
     
+    // function to apply current theme to ui elements
+    func applyTheme() {
+        // set view background
+        view.backgroundColor = Theme.current.background
+        
+        // set static label colours
+        prepTimeLbl.textColor = Theme.current.fontColour
+        cookingTimeLbl.textColor = Theme.current.fontColour
+        ingredientsLbl.textColor = Theme.current.fontColour
+        methodsLbl.textColor = Theme.current.fontColour
+        
+        // set textfield colours
+        recipeNameTf.backgroundColor = Theme.current.accent
+        recipeNameTf.textColor = Theme.current.fontColour
+        recipeNameTf.attributedPlaceholder =
+            NSAttributedString(string: "recipe name", attributes: [NSAttributedString.Key.foregroundColor: Theme.current.placeHolder])
+        
+        prepTimeTf.backgroundColor = Theme.current.accent
+        prepTimeTf.textColor = Theme.current.fontColour
+        prepTimeTf.attributedPlaceholder =
+            NSAttributedString(string: "minutes", attributes: [NSAttributedString.Key.foregroundColor: Theme.current.placeHolder])
+        
+        cookingTimeTf.backgroundColor = Theme.current.accent
+        cookingTimeTf.textColor = Theme.current.fontColour
+        cookingTimeTf.attributedPlaceholder =
+            NSAttributedString(string: "minutes", attributes: [NSAttributedString.Key.foregroundColor: Theme.current.placeHolder])
+        
+        ingredientQtyTf.backgroundColor = Theme.current.accent
+        ingredientQtyTf.textColor = Theme.current.fontColour
+        ingredientQtyTf.attributedPlaceholder =
+            NSAttributedString(string: "qty.", attributes: [NSAttributedString.Key.foregroundColor: Theme.current.placeHolder])
+        
+        ingredientNameTf.backgroundColor = Theme.current.accent
+        ingredientNameTf.textColor = Theme.current.fontColour
+        ingredientNameTf.attributedPlaceholder =
+            NSAttributedString(string: "ingredient", attributes: [NSAttributedString.Key.foregroundColor: Theme.current.placeHolder])
+        
+        measurementType.backgroundColor = Theme.current.accent
+        measurementType.textColor = Theme.current.fontColour
+        measurementType.attributedPlaceholder =
+            NSAttributedString(string: "unit", attributes: [NSAttributedString.Key.foregroundColor: Theme.current.placeHolder])
+        
+        methodTf.backgroundColor = Theme.current.accent
+        methodTf.textColor = Theme.current.fontColour
+        methodTf.attributedPlaceholder =
+            NSAttributedString(string: "methods", attributes: [NSAttributedString.Key.foregroundColor: Theme.current.placeHolder])
+        
+        // set camera button and imageview colours
+        addFromCameraBtn.backgroundColor = Theme.current.accent
+        recipeIv.backgroundColor = Theme.current.accent
+        
+        // reload tableview data
+        methodsTv.reloadData()
+        ingredientsTv.reloadData()
+    }
+    
     // function that is called before segue
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // if the segue is the save recipe segue, save the recipe
@@ -238,60 +310,11 @@ extension WriteRecipeViewController: UITextFieldDelegate {
         return length <= charLimit && allowedCharacters.isSuperset(of: typedCharacters)
     }
     
-    // function to apply current theme to ui elements
-    func applyTheme() {
-        // set view background
-        view.backgroundColor = Theme.current.background
-        
-        // set static label colours
-        prepTimeLbl.textColor = Theme.current.fontColour
-        cookingTimeLbl.textColor = Theme.current.fontColour
-        ingredientsLbl.textColor = Theme.current.fontColour
-        methodsLbl.textColor = Theme.current.fontColour
-        
-        // set textfield colours
-        recipeNameTf.backgroundColor = Theme.current.accent
-        recipeNameTf.textColor = Theme.current.fontColour
-        recipeNameTf.attributedPlaceholder =
-            NSAttributedString(string: "recipe name", attributes: [NSAttributedString.Key.foregroundColor: Theme.current.placeHolder])
-        
-        prepTimeTf.backgroundColor = Theme.current.accent
-        prepTimeTf.textColor = Theme.current.fontColour
-        prepTimeTf.attributedPlaceholder =
-            NSAttributedString(string: "minutes", attributes: [NSAttributedString.Key.foregroundColor: Theme.current.placeHolder])
-        
-        cookingTimeTf.backgroundColor = Theme.current.accent
-        cookingTimeTf.textColor = Theme.current.fontColour
-        cookingTimeTf.attributedPlaceholder =
-            NSAttributedString(string: "minutes", attributes: [NSAttributedString.Key.foregroundColor: Theme.current.placeHolder])
-        
-        ingredientQtyTf.backgroundColor = Theme.current.accent
-        ingredientQtyTf.textColor = Theme.current.fontColour
-        ingredientQtyTf.attributedPlaceholder =
-            NSAttributedString(string: "qty.", attributes: [NSAttributedString.Key.foregroundColor: Theme.current.placeHolder])
-
-        ingredientNameTf.backgroundColor = Theme.current.accent
-        ingredientNameTf.textColor = Theme.current.fontColour
-        ingredientNameTf.attributedPlaceholder =
-            NSAttributedString(string: "ingredient", attributes: [NSAttributedString.Key.foregroundColor: Theme.current.placeHolder])
-        
-        measurementType.backgroundColor = Theme.current.accent
-        measurementType.textColor = Theme.current.fontColour
-        measurementType.attributedPlaceholder =
-            NSAttributedString(string: "unit", attributes: [NSAttributedString.Key.foregroundColor: Theme.current.placeHolder])
-        
-        methodTf.backgroundColor = Theme.current.accent
-        methodTf.textColor = Theme.current.fontColour
-        methodTf.attributedPlaceholder =
-            NSAttributedString(string: "minutes", attributes: [NSAttributedString.Key.foregroundColor: Theme.current.placeHolder])
-        
-        // set camera button and imageview colours
-        addFromCameraBtn.backgroundColor = Theme.current.accent
-        recipeIv.backgroundColor = Theme.current.accent
-        
-        // reload tableview data
-        methodsTv.reloadData()
-        ingredientsTv.reloadData()
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if (textField == methodTf) { addMethod() }
+        else if (textField == ingredientNameTf) { addIngredient() }
+        view.endEditing(true)
+        return true
     }
 }
 
@@ -425,5 +448,6 @@ extension WriteRecipeViewController: UIPickerViewDataSource, UIPickerViewDelegat
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         selectedMeasurement = measurement[row]
         measurementType.text = selectedMeasurement
+        view.endEditing(true)
     }
 }
