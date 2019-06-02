@@ -88,22 +88,15 @@ class WriteRecipeViewController: UIViewController {
         let measurementPicker = UIPickerView()
         measurementPicker.delegate = self
         measurementType.inputView = measurementPicker
-
     }
     
 
     @IBAction func onAddIngredientBtnPressed(_ sender: Any) {
         addIngredient()
-        
-        //let bottomOffset = CGPoint(x: 0, y: contentsSv.contentSize.height - contentsSv.bounds.size.height)
-        //contentsSv.setContentOffset(bottomOffset, animated: true)
     }
     
     @IBAction func onAddMethodBtnPressed(_ sender: Any) {
         addMethod()
-        
-        //let bottomOffset = CGPoint(x: 0, y: contentsSv.contentSize.height - contentsSv.bounds.size.height)
-        //contentsSv.setContentOffset(bottomOffset, animated: true)
     }
     
     @IBAction func addImage(_ sender: UIButton) {
@@ -116,7 +109,6 @@ class WriteRecipeViewController: UIViewController {
             //imagePickerController.allowsEditing = true
             present(imagePickerController, animated: true, completion: nil)
         }
-        
     }
     
     // function to add ingredients
@@ -128,16 +120,12 @@ class WriteRecipeViewController: UIViewController {
                 var ingredient: String = ""
                 let measurement: String = String(selectedMeasurement ?? "")
                 
+                // create ingredient string and add to list
                 if (measurement != "") {
                     if (quantity != 1) { ingredient = "\(quantity)\(measurement)s \(name)"}
                     else { ingredient = "\(quantity)\(measurement) \(name)"}
                 }
-                else {
-                    ingredient = "\(quantity) \(name)"
-                }
-                
-                // create ingredient string and add to list
-                //let ingredient: String = "\(String(quantity)) \(String(selectedMeasurement ?? "")) \(name)"
+                else { ingredient = "\(quantity) \(name)" }
                 ingredients.append(ingredient)
                 
                 // empty ingredient input fields
@@ -181,11 +169,7 @@ class WriteRecipeViewController: UIViewController {
         guard let delegate = UIApplication.shared.delegate as? AppDelegate else { return }
 
         // get recipe properties
-        //if (recipe.id == 0) {recipe.id = CoreDataController.generateId()}
-        if (recipe.id == 0) {
-            recipe.id = CoreDataController.generateId()
-        }
-        //let recipe.name = recipeNameTf.text ?? ""
+        if (recipe.id == 0) { recipe.id = CoreDataController.generateId()}
         recipe.name = recipeNameTf.text ?? ""
         recipe.prepTime = Int(prepTimeTf.text ?? "") ?? 0
         recipe.cookingTime = Int(cookingTimeTf.text ?? "") ?? 0

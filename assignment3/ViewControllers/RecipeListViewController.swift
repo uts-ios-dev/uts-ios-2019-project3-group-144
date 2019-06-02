@@ -29,19 +29,24 @@ class RecipeListViewController: UIViewController {
         super.viewDidLoad()
         self.tabBarController?.tabBar.isHidden = false
         recipeTblView.tableFooterView = UIView(frame: CGRect.zero)
-        addGesture()
         getRecipes()
         if (recipes.count < 1) { btnMenu.isEnabled = false }
-        originalRecipes = recipes
-        sortedByTimeMax = recipes.sorted(by: { $0.prepTime > $1.prepTime })
-        sortedByTimeMin = recipes.sorted(by: { $0.prepTime < $1.prepTime })
-        sortedAlphabetically = recipes.sorted(by: { $0.name < $1.name })        
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        
+        // if all data has been deleted, update the recipe list and tableview
+        guard let delegate = UIApplication.shared.delegate as? AppDelegate else { return }
+        if (CoreDataController.isDataEmpty(delegate: delegate)) {
+            recipes = []
+            recipeTblView.reloadData()
+            getRecipes()
+            recipeTblView.reloadData()
+        }
+        
         self.tabBarController?.tabBar.isHidden = false
+        if (recipes.count < 1) { btnMenu.isEnabled = false }
     }
-    
     
     // function called before sefue
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -81,11 +86,11 @@ class RecipeListViewController: UIViewController {
             let recipe = Recipe(id: id, name: name, imageName: imageName, prepTime: prepTime, cookingTime: cookingTime, ingredients: ingredients, methods: methods)
             recipes.append(recipe)
         }
-    }
-    
-    func addGesture() {
-        //let tap = UITapGestureRecognizer(target: self, action: #selector(RecipeListViewController.showActionSheet))
-        //btnMenu.addGestureRecognizer(tap)
+        
+        originalRecipes = recipes
+        sortedByTimeMax = recipes.sorted(by: { $0.prepTime > $1.prepTime })
+        sortedByTimeMin = recipes.sorted(by: { $0.prepTime < $1.prepTime })
+        sortedAlphabetically = recipes.sorted(by: { $0.name < $1.name })
     }
     
     @IBAction func onPressSortBtn(_ sender: Any) {

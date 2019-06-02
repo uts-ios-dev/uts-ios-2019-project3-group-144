@@ -120,4 +120,26 @@ class CoreDataController {
         do { try context.save() }
         catch let error as NSError { print("Could not save. \(error), \(error.userInfo)") }
     }
+    
+    // function to check if core data is empty
+    static func isDataEmpty(delegate: AppDelegate) -> Bool {
+        let recipeData = getRecipeData(delegate: delegate)
+        return recipeData.isEmpty
+    }
+    
+    // function to clear all recipes
+    static func clearRecipeData(delegate: AppDelegate) {
+        // set up the context and get a list of all recipes in the core data
+        let context = delegate.persistentContainer.viewContext
+        let recipeData = getRecipeData(delegate: delegate)
+        
+        // look for the recipe that has a matching name and delete it
+        for data in recipeData {
+            context.delete(data)
+        }
+        
+        // attempt to save the recipes without the deleted recipe
+        do { try context.save() }
+        catch let error as NSError { print("Could not save. \(error), \(error.userInfo)") }
+    }
 }
